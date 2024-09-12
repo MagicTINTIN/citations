@@ -49,6 +49,14 @@ window.onresize = function(event) {
     autoGrow(document.getElementById("citationInput"));
 };
 
-document.onload = function(event) {
-    window.scrollTo(0,document.body.scrollHeight);
-}
+// document.addEventListener("DOMContentLoaded", function() {
+//     window.scrollTo(0,document.body.scrollHeight);
+//   });
+
+// window.onload = function(event) {
+//     window.scrollTo(0,document.body.scrollHeight);
+// }
+
+// document.body.scrollIntoView(false);
+
+// window.scrollTo(0,document.body.scrollHeight);

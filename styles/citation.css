@@ -22,7 +22,7 @@
 
 .citationInput {
     margin: auto;
-    margin-top: 2vh;
+    /* margin-top: 2vh; */
     width: 80vw;
 
     color: var(--w);
@@ -69,7 +69,8 @@
     transition: all 0.15s ease-in-out;
 }
 
-.input:hover, textarea:hover {
+.input:hover,
+textarea:hover {
     background-color: rgba(155, 155, 155, 0.185);
 }
 
@@ -122,4 +123,18 @@
         margin-top: 10px;
         border-radius: max(1vh, 1vw);
     }
-  }
+}
+
+h1 {
+    font-family: 'citationFont';
+    font-size: max(10vw, 10vh);
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.underH1 {
+    text-align: right;
+    /* font-weight: light; */
+    padding-right: 10vw;
+    margin-bottom: 4vh;
+}

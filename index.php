@@ -70,6 +70,20 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     <?php include_once("./includes/nojs.php"); ?>
     <?php include_once("./includes/infoanderror.php"); ?>
     <main>
+        <h1>Citations Magistrales</h1>
+        <p class="underH1" title="Tant que ça ne porte pas atteinte à l'intégrité de la personne... bien évidemment">Enregistrez les pépites entendues en CM</p>
+        <form method="post" class="citationForm">
+            <div class='citationZone zone'><span class='citationCommon'>"</span><textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea><span class='citationCommon closingInput'>"</span></div>
+
+            <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
+                <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
+            </div>
+
+            <div class='zone3'>
+                <input type="submit" class="input citationSubmit" id="newCitationSubmit" value="Ajouter la citation" name="newCitationSubmit">
+            </div>
+
+        </form>
         <ul>
             <?php
             $db = dbConnect();
@@ -77,7 +91,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             $citationsStatement->execute();
             $citations = $citationsStatement->fetchAll();
 
-            foreach ($citations as $key => $value) {
+            foreach (array_reverse($citations) as $key => $value) {
                 if ($value["status"] == 1) {
                     echo "<li>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
@@ -94,18 +108,6 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             }
             ?>
         </ul>
-        <form method="post" class="citationForm">
-            <div class='citationZone zone'><span class='citationCommon'>"</span><textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea><span class='citationCommon closingInput'>"</span></div>
-
-            <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
-                <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
-            </div>
-
-            <div class='zone3'>
-                <input type="submit" class="input citationSubmit" id="newCitationSubmit" value="Add citation" name="newCitationSubmit">
-            </div>
-
-        </form>
     </main>
     <script src="./scripts/common.js"></script>
 </body>
