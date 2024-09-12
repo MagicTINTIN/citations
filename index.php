@@ -1,44 +1,35 @@
 <?php session_start();
 // include_once("includes/cas.php");
-$username = "user";//phpCAS::getUser();
+$username = "user"; //phpCAS::getUser();
 include_once("includes/db.php");
 include_once("includes/time.php");
+$db = dbConnect();
 
-if (isset($_POST["plate"]) && isset($_SESSION["name"]) && isset($_SESSION["time"]) && isset($_SESSION["new"]) && isset($_SESSION["updated"]) && isset($_SESSION["total"])) {
+if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
 
-    if ($isNewPlate == 1) {
-        $sqlQuery = 'INSERT INTO plates(session, sessionTime, createdAt, plate, lastSeen, nbSeen, type) VALUES (:session, :sessionTime, :createdAt, :plate, :lastSeen, :nbSeen, :type)';
+    $sqlQuery = 'INSERT INTO citations(date, citation, author, username) VALUES (:date, :citation, :author, :username)';
 
-        $insertPlate = $db->prepare($sqlQuery);
-        $insertPlate->execute([
-            'session' => $_SESSION["name"],
-            'sessionTime' => $_SESSION["time"],
-            'createdAt' => $now,
-            'plate' => $platename,
-            'lastSeen' => $now,
-            'nbSeen' => $nbSeen,
-            'type' => $newplatetype
-        ]);
-        $_SESSION["new"] += 1;
-    } else if ($isNewPlate == 0) {
-        $sqlQuery = 'UPDATE plates SET lastSeen = :lastSeen, nbSeen = :nbSeen, type = :type WHERE plate = :plate';
-
-        $updatePlates = $db->prepare($sqlQuery);
-        $updatePlates->execute([
-            'plate' => $platename,
-            'lastSeen' => $now,
-            'nbSeen' => $nbSeen,
-            'type' => $newplatetype
-        ]);
-        $_SESSION["updated"] += 1;
-    }
-    $_SESSION["total"] += 1;
-
-    $_SESSION["outputmsg"] = $outputvalue;
-
-    header("Location: ./");
+    $insertCitation = $db->prepare($sqlQuery);
+    $insertCitation->execute([
+        'date' => htmlspecialchars($_POST["dateInput"]),
+        'citation' => htmlspecialchars($_POST["citationInput"]),
+        'author' => htmlspecialchars($_POST["authorInput"]),
+        'username' => $username
+    ]);
+    header("Refresh:0");
     exit();
+} else if (false) {
+    $sqlQuery = 'UPDATE plates SET lastSeen = :lastSeen, nbSeen = :nbSeen, type = :type WHERE plate = :plate';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'plate' => $platename,
+        'lastSeen' => $now,
+        'nbSeen' => $nbSeen,
+        'type' => $newplatetype
+    ]);
+    $_SESSION["updated"] += 1;
 }
 
 ?>
@@ -72,21 +63,30 @@ if (isset($_POST["plate"]) && isset($_SESSION["name"]) && isset($_SESSION["time"
         <ul>
             <?php
             $db = dbConnect();
-            $platesStatement = $db->prepare('SELECT * FROM citations');
-            $platesStatement->execute();
-            $plates = $platesStatement->fetchAll();
+            $citationsStatement = $db->prepare('SELECT * FROM citations');
+            $citationsStatement->execute();
+            $citations = $citationsStatement->fetchAll();
 
-            foreach ($plates as $key => $value) {
+            foreach ($citations as $key => $value) {
                 echo "<li>
-                <div class='citationZone'><span class='citation'>\"" . $value["citation"] . "\"</div>
-                <div class='authorDateZone'><span class='authorDate'>" . $value["author"] . " - " . $value["date"] . "</div>";
-                if (in_array($username , array( 'serviere' , 'v_lasser')) || $username == $value["username"]) {
+                <div class='citationZone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
+                <div class='authorDateZone'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "</div>";
+                if (in_array($username, array('serviere', 'v_lasser')) || $username == $value["username"]) {
                     echo "<div class='deleteCitation'>x</div>";
                 }
                 echo "</li>";
             }
             ?>
         </ul>
+        <form method="post" class="citationForm">
+            <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024"></textarea>
+            <br>
+            <input type="text" class="authorDateInput authorDateCommon" name="authorInput" id="authorInput" required maxlength="250">
+            <input type="date" class="authorDateInput authorDateCommon" id="start" name="dateInput" value="<?php date('Y-m-d') ?>" required>
+            <br>
+            <input type="submit" class="citationSubmit" id="newCitationSubmit" value="Update description" name="newCitationSubmit">
+
+        </form>
     </main>
 </body>
 
