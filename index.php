@@ -46,7 +46,9 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     <script src="./scripts/commonhead.js"></script>
     <link href="./styles/animations.css" rel="stylesheet">
     <link href="./styles/vars.css" rel="stylesheet">
+    <link href="./styles/issue.css" rel="stylesheet">
     <link href="./styles/common.css" rel="stylesheet">
+    <link href="./styles/citation.css" rel="stylesheet">
     <meta name="author" content="MagicTINTIN">
     <meta name="description" content="Un site pour recenser les pépites entendues en CM">
 
@@ -65,8 +67,8 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
 </head>
 
 <body>
-<?php include_once("./includes/nojs.php"); ?>
-<?php include_once("./includes/infoanderror.php"); ?>
+    <?php include_once("./includes/nojs.php"); ?>
+    <?php include_once("./includes/infoanderror.php"); ?>
     <main>
         <ul>
             <?php
@@ -78,8 +80,8 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             foreach ($citations as $key => $value) {
                 if ($value["status"] == 1) {
                     echo "<li>
-                <div class='citationZone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
-                <div class='authorDateZone'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "</div>";
+                <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
+                <div class='authorDateZone zone adzCitation'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
                     if (in_array($username, array('serviere', 'v_lasser')) || $username == $value["username"]) {
             ?>
                         <div class="delMsgDiv">
@@ -87,18 +89,21 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
                         </div>
             <?php
                     }
-                    echo "</li>";
+                    echo "</div></li>";
                 }
             }
             ?>
         </ul>
         <form method="post" class="citationForm">
-            <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024"></textarea>
-            <br>
-            <input type="text" class="authorDateInput authorDateCommon" name="authorInput" id="authorInput" required maxlength="250">
-            <input type="date" class="authorDateInput authorDateCommon" id="start" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
-            <br>
-            <input type="submit" class="citationSubmit" id="newCitationSubmit" value="Add citation" name="newCitationSubmit">
+            <div class='citationZone zone'><span class='citationCommon'>"</span><textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea><span class='citationCommon closingInput'>"</span></div>
+
+            <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
+                <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
+            </div>
+
+            <div class='zone3'>
+                <input type="submit" class="input citationSubmit" id="newCitationSubmit" value="Add citation" name="newCitationSubmit">
+            </div>
 
         </form>
     </main>

@@ -6,10 +6,18 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Lucida Console', monospace;
+    /* width: 100vw; */
+    height: 100vh;
 }
 
 body {
-    background-color: var(--n);
+    /* background-color: var(--n); */
+    background: rgb(25, 17, 74);
+    /* background: linear-gradient(328deg, rgba(25, 17, 74, 1) 0%, rgba(116, 116, 218, 1) 15%, rgba(180, 242, 255, 1) 100%); */
+    background: linear-gradient(328deg, rgba(25, 17, 74, 1) 0%, rgb(39, 39, 104) 15%, rgb(16, 75, 87) 100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--w);
 }
 
@@ -31,11 +39,17 @@ img {
     -ms-user-select: none;
 }
 
+li, ul {
+    margin: 0;
+    padding: 0;
+}
+
 textarea {
     resize: none;
 }
 
-.endofPage, .bigbr {
+.endofPage,
+.bigbr {
     height: 15vh;
 }
 
@@ -43,21 +57,21 @@ input {
     background-color: var(--n);
     color: var(--w);
     /* transition: background-color 0.3s ease, color 0.3s ease; */
-  }
+}
 
-  input:-moz-placeholder {
+input:-moz-placeholder {
     color: var(--w) !important;
     background-color: var(--n) !important;
-  }
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-text-fill-color: var(--w) !important;
-  -webkit-box-shadow: 0 0 0 30px var(--n) inset !important;
-  background-color: var(--n) !important;
-  color: var(--w) !important;
+    -webkit-text-fill-color: var(--w) !important;
+    -webkit-box-shadow: 0 0 0 30px var(--n) inset !important;
+    background-color: var(--n) !important;
+    color: var(--w) !important;
 }
 
 /* ----------- NOJS ----------- */
@@ -541,7 +555,7 @@ nav {
 /* ----------- SCROLLBAR ----------- */
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 0px;
     background: #00000000;
 }
 
@@ -565,7 +579,7 @@ nav {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    width: 14px;
+    width: 0px;
     border-radius: 4px;
     background-color: var(--gray);
 }

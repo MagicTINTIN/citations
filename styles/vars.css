@@ -17,3 +17,8 @@
     --wv: #B4B3B6;
     --gray: #6D676E;
 }
+
+@font-face {
+    font-family: "citationFont";
+    src: url("./LTPerfume-2.ttf");
+}

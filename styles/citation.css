@@ -1,0 +1,125 @@
+.citationZone {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.authorDateZone {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.authorDateZoneInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.adzCitation {
+    transform: translateY(min(-3.5vw, -3.5vh));
+}
+
+.citationInput {
+    margin: auto;
+    margin-top: 2vh;
+    width: 80vw;
+
+    color: var(--w);
+
+    border: none 0px var(--gray);
+
+    padding: 10px;
+    /* border-radius: 10px; */
+    box-sizing: border-box;
+    /* font-family: 'Lucida Console', monospace; */
+
+    background-color: rgba(255, 255, 255, 0.185);
+
+    border-top-left-radius: max(1vh, 1vw);
+    border-top-right-radius: max(1vh, 1vw);
+    border-bottom-left-radius: max(1vh, 1vw);
+
+    /*Horizontal*/
+    /* background-image: linear-gradient(to right, black 33%, rgba(255, 255, 255, 0) 0%);
+    background-position: bottom;
+    background-size: 10px 1px;
+    background-repeat: repeat-x;
+
+    /*Vertical*/
+    /* background-image: linear-gradient(black 33%, rgba(255, 255, 255, 0) 0%);
+    background-position: right;
+    background-size: 1px 10px;
+    background-repeat: repeat-y; */
+}
+
+
+.authorInput {
+    border-bottom-left-radius: max(1vh, 1vw);
+}
+
+.dateInput {
+    border-bottom-right-radius: max(1vh, 1vw);
+}
+
+.input {
+    padding: 10px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.185);
+    transition: all 0.15s ease-in-out;
+}
+
+.input:hover, textarea:hover {
+    background-color: rgba(155, 155, 155, 0.185);
+}
+
+.citationCommon {
+    font-family: 'citationFont';
+    font-size: max(10vw, 10vh);
+}
+
+.authorDateCommon {
+    font-size: x-large;
+}
+
+.zone {
+    width: 90vw;
+    margin: auto;
+}
+
+.zone2 {
+    width: 80vw;
+    margin: auto;
+}
+
+.zone3 {
+    width: 50vw;
+    margin: auto;
+}
+
+.closingInput {
+    transform: translateX(min(-5vw, -5vh));
+}
+
+.citationSubmit {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: calc(10px + 1vh);
+    border-radius: max(1vh, 1vw);
+}
+
+@media only screen and (max-width: 700px) {
+    .authorDateZoneInput {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .citationZone textarea {
+        border-radius: max(1vh, 1vw);
+    }
+
+    .authorDateZoneInput input {
+        margin-top: 10px;
+        border-radius: max(1vh, 1vw);
+    }
+  }

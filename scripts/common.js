@@ -42,3 +42,13 @@ function copytcb(tocopy) {
         document.body.removeChild(storage);
     }
 }
+
+autoGrow(document.getElementById("citationInput"));
+
+window.onresize = function(event) {
+    autoGrow(document.getElementById("citationInput"));
+};
+
+document.onload = function(event) {
+    window.scrollTo(0,document.body.scrollHeight);
+}
