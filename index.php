@@ -42,23 +42,31 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>Citations Magistrales</title>
-    <link href="vars.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <link href="importer/imports.css" rel="stylesheet">
+
+    <script src="./scripts/commonhead.js"></script>
+    <link href="./styles/animations.css" rel="stylesheet">
+    <link href="./styles/vars.css" rel="stylesheet">
+    <link href="./styles/common.css" rel="stylesheet">
     <meta name="author" content="MagicTINTIN">
     <meta name="description" content="Un site pour recenser les pépites entendues en CM">
 
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Citations Magistrales">
     <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
 
     <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="Logo of Citations Magistrales">
+
+    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/ProjectSupport/<?php echo $websiteTagSuffix ?>" />
+    <meta data-react-helmet="true" name="theme-color" content="#FAA916" />
 </head>
 
 <body>
+<?php include_once("./includes/nojs.php"); ?>
+<?php include_once("./includes/infoanderror.php"); ?>
     <main>
         <ul>
             <?php
@@ -68,13 +76,19 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             $citations = $citationsStatement->fetchAll();
 
             foreach ($citations as $key => $value) {
-                echo "<li>
+                if ($value["status"] == 1) {
+                    echo "<li>
                 <div class='citationZone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "</div>";
-                if (in_array($username, array('serviere', 'v_lasser')) || $username == $value["username"]) {
-                    echo "<div class='deleteCitation'>x</div>";
+                    if (in_array($username, array('serviere', 'v_lasser')) || $username == $value["username"]) {
+            ?>
+                        <div class="delMsgDiv">
+                            <span onclick="createMessage('confirm', 'Delete citation ?', 'Are you sure you want to delete this citation?', 'deletemsg', 'Delete', 'delID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Delete</span>
+                        </div>
+            <?php
+                    }
+                    echo "</li>";
                 }
-                echo "</li>";
             }
             ?>
         </ul>
@@ -84,10 +98,11 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             <input type="text" class="authorDateInput authorDateCommon" name="authorInput" id="authorInput" required maxlength="250">
             <input type="date" class="authorDateInput authorDateCommon" id="start" name="dateInput" value="<?php date('Y-m-d') ?>" required>
             <br>
-            <input type="submit" class="citationSubmit" id="newCitationSubmit" value="Update description" name="newCitationSubmit">
+            <input type="submit" class="citationSubmit" id="newCitationSubmit" value="Add citation" name="newCitationSubmit">
 
         </form>
     </main>
+    <script src="./scripts/common.js"></script>
 </body>
 
 </html>
