@@ -19,17 +19,17 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     ]);
     header("Refresh:0");
     exit();
-} else if (false) {
-    $sqlQuery = 'UPDATE plates SET lastSeen = :lastSeen, nbSeen = :nbSeen, type = :type WHERE plate = :plate';
+} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"])) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
 
     $updatePlates = $db->prepare($sqlQuery);
     $updatePlates->execute([
-        'plate' => $platename,
-        'lastSeen' => $now,
-        'nbSeen' => $nbSeen,
-        'type' => $newplatetype
+        'ID' => htmlspecialchars($_POST["delID"]),
+        'status' => 0
     ]);
-    $_SESSION["updated"] += 1;
+
+    header("Refresh:0");
+    exit();
 }
 
 ?>
@@ -96,7 +96,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024"></textarea>
             <br>
             <input type="text" class="authorDateInput authorDateCommon" name="authorInput" id="authorInput" required maxlength="250">
-            <input type="date" class="authorDateInput authorDateCommon" id="start" name="dateInput" value="<?php date('Y-m-d') ?>" required>
+            <input type="date" class="authorDateInput authorDateCommon" id="start" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
             <br>
             <input type="submit" class="citationSubmit" id="newCitationSubmit" value="Add citation" name="newCitationSubmit">
 
