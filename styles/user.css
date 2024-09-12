@@ -1,0 +1,452 @@
+/* --------------- LIST --------------- */
+
+#userList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+}
+
+.hrList {
+    width: 90vw;
+    border: solid 1px var(--gray);
+}
+
+.userOfList {
+    width: 95vw;
+    height: calc(10vh + 14px);
+    max-height: calc(10vh + 14px);
+
+    padding: 5px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    border: solid 2px var(--wv);
+
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+
+    overflow: hidden;
+
+    background-color: var(--nv);
+    transition: all .2s;
+}
+
+.userOfList:hover {
+    background-color: var(--gray);
+}
+
+.profilepicUsrList {
+    width: 10vh;
+    height: 10vh;
+    border-radius: 50%;
+
+    background-color: var(--y);
+    color: var(--n);
+
+    font-weight: bold;
+    text-align: center;
+    font-size: 5vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    margin-right: 1vw;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.pseudoOfList {
+    font-size: 5vh;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    transition: all .2s;
+}
+
+.pseudoOfList:hover {
+    background-color: var(--nv);
+}
+
+.descriptionOfList {
+    font-size: 2vh;
+    text-wrap: wrap;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.userTextsOfList {
+    width: calc(85vw - 14px - 10vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.statsOfList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.statsOLspan {
+    width: 10vw;
+    text-align: right;
+    background-color: var(--n);
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.mosolElement {
+    color: var(--bv);
+}
+
+.nosolElement {
+    color: var(--y);
+}
+
+.cosolElement {
+    color: var(--g);
+}
+
+.mosolElement,
+.nosolElement,
+.cosolElement {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    font-weight: bold;
+}
+
+/* Ranks */
+
+.rootOfList,
+.rootOfPage {
+    color: var(--y) !important;
+    font-weight: bold;
+}
+
+.adminOfList,
+.adminOfPage {
+    color: var(--rv) !important;
+    font-weight: bold;
+}
+
+.devOfList,
+.devOfPage {
+    color: var(--gv) !important;
+    font-weight: bold;
+}
+
+.modOfList,
+.modOfPage {
+    color: var(--bv) !important;
+    font-weight: bold;
+}
+
+/* --------------- PUBLIC PAGE --------------- */
+
+.imgAndPseudoOfPage {
+    width: 80vw;
+    margin: auto;
+    margin-top: 3vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profilepicUsrPage {
+    width: min(30vh, 30vw);
+    height: min(30vh, 30vw);
+    border-radius: 50%;
+
+    background-color: var(--y);
+    color: var(--n);
+
+    font-weight: bold;
+    text-align: center;
+    font-size: 5vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    margin-right: 1vw;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    transition: all 0.3s;
+    box-sizing: border-box;
+    border-style: dashed;
+    border-color: var(--y);
+    border-width: 0px;
+}
+
+/* .profilepicUsrPage:hover {
+    border-width: 4px;
+} */
+
+.divOverUploadImage {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    z-index: 600;
+
+    /* top: max(-30vh, -30vw); */
+    transform: translateY(max(-30vh, -30vw));
+    width: min(30vh, 30vw);
+    height: min(30vh, 30vw);
+    border-radius: 50%;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    background-color: var(--nho);
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.containerUploadImage {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    width: min(30vh, 30vw);
+    height: min(30vh, 30vw);
+    display: block;
+    cursor: pointer;
+}
+
+.containerUploadImage:hover .profilepicUsrPage {
+    /* opacity: 0.3; */
+    border-style: dashed;
+    border-color: var(--y);
+    border-width: 4px;
+}
+
+.containerUploadImage:hover .divOverUploadImage {
+    opacity: 1;
+}
+
+#oldUploadPP {
+    display: none;
+}
+
+.textOverUploadImage {
+    font-weight: bold;
+}
+
+.divPseudoOfPage {
+    width: calc(75vw - min(30vh, 30vw));
+    height: min(30vh, 30vw);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.pseudoOfPage {
+    width: calc(75vw - min(30vh, 30vw));
+}
+
+.userDescriptionOfPage {
+    margin: auto;
+    margin-top: 2vh;
+    width: 80vw;
+
+    color: var(--w);
+
+    border: solid 2px var(--gray);
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Lucida Console', monospace;
+
+    background-color: var(--nv);
+}
+
+.descriptionForm {
+    margin: auto;
+    margin-top: 2vh;
+    margin-left: 10vw;
+    width: 80vw;
+}
+
+.statsOfPage {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.statsOPspan {
+    width: calc((75vw - min(30vh, 30vw)) / 6);
+    text-align: center;
+    background-color: var(--nv);
+    box-sizing: border-box;
+    border: solid 2px var(--gray);
+    border-radius: 3px;
+    padding: 2px;
+}
+
+#imgUser {
+    width: min(30vh, 30vw);
+}
+
+/* --------------- UPLOAD IMAGE --------------- */
+
+.selectPP,
+.submitPP {
+    cursor: pointer;
+    border: 2px solid var(--y);
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 8px;
+    background: var(--nv);
+    width: min(30vh, 30vw);
+    box-sizing: border-box;
+}
+
+.submitPP {
+    color: var(--w);
+    font-weight: bold;
+}
+
+.selectPP:hover {
+    background: var(--n);
+}
+
+.selectPP:active {
+    background: black;
+}
+
+.selectPP:invalid {
+    color: var(--re);
+}
+
+.selectPP:valid,
+.selectPP:valid~.submitPP {
+    color: var(--gv);
+    border-color: var(--gv);
+    box-shadow: 0 0 10px var(--g);
+}
+
+/* Update username */
+
+#pseudoInput {
+    font-size: xx-large;
+    color: inherit;
+    background-color: var(--n);
+    border: none;
+    font-weight: bold;
+    font-family: 'Lucida Console', monospace;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#pseudoSubmit {
+    width: 5vw;
+    width: calc(75vw - min(30vh, 30vw));
+    box-sizing: border-box;
+}
+
+/* Admin Zone */
+
+#updateRoles {
+    width: calc(80vw);
+    margin: 0;
+    padding: 10px;
+
+    border: solid 2px var(--rv);
+    border-radius: 10px;
+    background-color: var(--nv);
+    color: var(--w);
+
+    font-size: medium;
+    font-weight: bold;
+    font-family: 'Lucida Console', monospace;
+}
+
+.roleOption {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin: 0;
+    width: 100%;
+    background-color: var(--nv);
+    color: var(--w);
+    border-radius: 3px;
+
+    transition: all .3s;
+
+    font-size: medium;
+    font-weight: bold;
+    font-family: 'Lucida Console', monospace;
+}
+
+.roleOption:hover {
+    background-color: var(--gray);
+    color: var(--w);
+}
+
+#updateRoles::selection,
+#updateRoles option::selection,
+.roleOption:checked,
+.roleOption:active {
+    background-color: var(--y) !important;
+    color: var(--nv) !important;
+}
+
+.dangerSubmit {
+    color: var(--rv);
+    border: solid 2px var(--rv);
+    background-color: var(--nv);
+}
+
+.dangerSubmit:hover {
+    background-color: var(--n);
+}
+
+.dangerSubmit:active  {
+    color: var(--rv);
+    border: solid 2px var(--rv);
+    box-shadow: 0 0 10px var(--rv)
+}
+
+.bannedInfoUsr {
+    font-size: small;
+    color: var(--rv);
+}

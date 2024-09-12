@@ -1,0 +1,89 @@
+/* Animations */
+
+@keyframes error {
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    10% {
+        transform: rotate(5deg);
+    }
+
+    20% {
+        transform: rotate(-4deg);
+    }
+
+    30% {
+        transform: rotate(4deg);
+    }
+
+    50% {
+        transform: rotate(-3deg);
+    }
+
+    70% {
+        transform: rotate(2deg);
+    }
+
+    90% {
+        transform: rotate(-1deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes info {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes warning {
+    0% {
+        transform: scaleX(0) scaleY(1)
+    }
+
+    10% {
+        transform: scaleX(1) scaleY(.5);
+    }
+
+    20% {
+        transform: scaleX(.6) scaleY(1);
+    }
+
+    30% {
+        transform: scaleX(1) scaleY(.7);
+    }
+
+    50% {
+        transform: scaleX(0.8) scaleY(1);
+    }
+
+    70% {
+        transform: scaleX(1) scaleY(.9);
+    }
+
+    90% {
+        transform: scaleX(0.95) scaleY(1);
+    }
+
+    100% {
+        transform: scaleX(1) scaleY(1);
+    }
+}
+
+@keyframes scaleY {
+    0% {
+        transform: translateY(-10px) scaleY(0);
+    }
+
+    100% {
+        transform: translateY(-10px) scaleY(1);
+    }
+}

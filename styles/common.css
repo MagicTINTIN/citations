@@ -1,0 +1,603 @@
+/* ----------- DEFAULT CSS IS UGLY ----------- */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Console', monospace;
+}
+
+body {
+    background-color: var(--n);
+    color: var(--w);
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+}
+
+img {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.endofPage, .bigbr {
+    height: 15vh;
+}
+
+input {
+    background-color: var(--n);
+    color: var(--w);
+    /* transition: background-color 0.3s ease, color 0.3s ease; */
+  }
+
+  input:-moz-placeholder {
+    color: var(--w) !important;
+    background-color: var(--n) !important;
+  }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--w) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--n) inset !important;
+  background-color: var(--n) !important;
+  color: var(--w) !important;
+}
+
+/* ----------- NOJS ----------- */
+
+#nojs {
+    width: 100%;
+    height: 100%;
+    background-color: var(--n);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#nojs div {
+    z-index: 10;
+    width: 70%;
+    height: 80%;
+    background-color: var(--nv);
+    margin: auto;
+    color: var(--w);
+    text-align: center;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* ----------- INFOS ERRORS POP UP ----------- */
+
+.animError {
+    animation: error .8s;
+}
+
+.animInfo {
+    animation: info .8s;
+}
+
+.popUpMessage {
+    position: fixed;
+    top: 5vh;
+    left: 15vw;
+
+    width: 70vw;
+    border-width: 3px;
+    border-style: solid;
+
+    background-color: var(--nv);
+
+    border-radius: 13px;
+    padding: 10px;
+    box-sizing: border-box;
+
+    box-shadow: 5px 5px 10px black;
+
+    transform: scale(0) rotate(0deg);
+    transition: all 0.3s;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    z-index: 99999;
+}
+
+.popUpText {
+    width: calc(69vw - 36px);
+}
+
+.popUpTitle {
+    font-size: large;
+    font-weight: bold;
+}
+
+.popUpContent {
+    color: var(--w);
+}
+
+#popUpErrorMessage {
+    color: var(--rv);
+    border-color: var(--re);
+}
+
+#popUpInfoMessage {
+    color: var(--bv);
+    border-color: var(--be);
+}
+
+.closePopUp {
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    color: var(--w);
+    padding: 5px;
+    transition: all .2s;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#popUpErrorMessageClose {
+    background-color: var(--re);
+}
+
+#popUpErrorMessageClose:hover {
+    background-color: var(--r);
+}
+
+#popUpInfoMessageClose {
+    background-color: var(--be);
+}
+
+#popUpInfoMessageClose:hover {
+    background-color: var(--b);
+}
+
+#popUpErrorMessageClose:active,
+#popUpInfoMessageClose:active {
+    background-color: var(--n);
+}
+
+.confirmForm {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.popUpButton {
+    margin: 5px;
+    padding: 5px;
+    transition: 0.15s;
+
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    font-family: 'Lucida Console', monospace;
+    font-size: medium;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    transition: all .5s;
+}
+
+.popUpConfirmSub {
+    font-weight: bold;
+    border-color: var(--y);
+    color: var(--n);
+    background-color: var(--yv);
+}
+
+.popUpConfirmSub:hover {
+    box-shadow: 0 0 10px var(--y);
+}
+
+.popUpConfirmSub:active {
+    background-color: var(--yv);
+}
+
+.cancelPopUp {
+    border-color: var(--w);
+    color: var(--w);
+    background-color: var(--nv);
+}
+
+.cancelPopUp:hover {
+    box-shadow: 0 0 10px var(--w);
+}
+
+.cancelPopUp:active {
+    background-color: var(--n);
+}
+
+/* ----------- GENERAL CLASSES ----------- */
+
+.rowSB {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.vcenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.endofline {
+    color: var(--wv);
+}
+
+
+.newSection {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    width: 90vw;
+    border: solid 1px var(--gray);
+}
+
+/* ----------- DANGER ZONE ----------- */
+
+.dangerzone {
+    width: 80vw;
+    border: solid 2px var(--rv);
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    background-color: var(--n);
+}
+
+.dangerzoneTitle {
+    margin: 0;
+    margin-bottom: 3vh;
+    text-align: center;
+    color: var(--rv);
+}
+
+/* ----------- NAV ----------- */
+
+nav {
+    /* width: 100vw; */
+    min-height: 5vh;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    background-color: var(--nv);
+    color: var(--w);
+    border-bottom: 2px solid var(--gray);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.bannedNav {
+    background-color: var(--r) !important;
+    border-bottom: 2px solid var(--rv) !important;
+}
+
+.banndedNavInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+#navLogo {
+    width: calc(5vh - 10px);
+    height: calc(5vh - 10px);
+}
+
+#navName {
+    font-weight: bold;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Nav links */
+
+.navLink {
+    margin: 5px;
+    padding: 5px;
+    transition: all .2s;
+
+    border-radius: 5px;
+    background: linear-gradient(var(--nv) 0%, var(--nv) 80%, var(--n) 100%);
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.navLink:hover {
+    background: linear-gradient(var(--nv) 0%, var(--n) 20%, var(--n) 100%);
+}
+
+.navLink:active {
+    box-shadow: 0 0 10px var(--y)
+}
+
+/* Nav connect */
+
+.navButton {
+    margin: 5px;
+    padding: 5px;
+    transition: 0.15s;
+
+    border: solid 2px var(--y);
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    transition: all .5s;
+}
+
+.navButton:hover {
+    background-color: var(--n);
+}
+
+.navButton:active {
+    box-shadow: 0 0 10px var(--y)
+}
+
+/* Nav right */
+.navProfilePicture {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.navProfilePictureImage {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 50%;
+
+    background-color: var(--y);
+    color: var(--n);
+
+    font-weight: bold;
+    text-align: center;
+    font-size: 3vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* ----------- FORM ----------- */
+
+.form {
+    background-color: var(--nv);
+    color: var(--w);
+
+    padding: 10px;
+
+    border: 2px solid var(--y);
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.centeredform {
+    box-sizing: border-box;
+    position: absolute;
+
+    width: 70vw;
+    min-height: 50vh;
+
+    left: 15vw;
+    top: 25vh;
+}
+
+#centeredFormLogo {
+    position: absolute;
+    top: 2.5vh;
+    left: calc(50vw - 20vh / 2);
+
+    width: 20vh;
+    height: 20vh;
+}
+
+.formTitle {
+    text-align: center;
+}
+
+.formForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.formSubmit,
+.formInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+
+    border-radius: 5px;
+    border: solid 2px var(--gray);
+    background-color: var(--n);
+
+    transition: all .3s;
+}
+
+.formInput {
+    color: var(--w);
+    font-size: medium;
+    padding: 10px;
+}
+
+.formSubmit {
+    font-weight: bold;
+    text-align: center;
+    color: var(--y);
+
+    margin-bottom: 3vh;
+}
+
+.formSubmit:hover {
+    background-color: black;
+}
+
+.formSubmit:active {
+    border-color: var(--y);
+    box-shadow: 0 0 10px var(--y)
+}
+
+#errorFormMessage {
+    background-color: var(--r);
+    font-weight: bold;
+    color: var(--w);
+
+    position: fixed;
+    top: 20vh;
+    left: 25vw;
+
+    width: 50vw;
+
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+/* ----------- SCROLLBAR ----------- */
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #00000000;
+}
+
+::-webkit-scrollbar:hover {
+    width: 14px;
+    background: #00000000;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #00000000;
+    border: none;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+    background-color: var(--nv);
+    transition: all 1s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    width: 14px;
+    border-radius: 4px;
+    background-color: var(--gray);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--y);
+}
+
+/* ----------- NOT FOUND ----------- */
+
+#centeredContent {
+    width: 80vw;
+    height: 20vh;
+
+    position: fixed;
+    box-sizing: border-box;
+
+    z-index: 900;
+    top: 40vh;
+    left: 10vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.hmmm {
+    text-align: center;
+    font-size: xx-large;
+}
+
+.notfound {
+    text-align: center;
+    font-size: large;
+}
