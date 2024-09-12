@@ -1,6 +1,6 @@
 <?php session_start();
-// include_once("includes/cas.php");
-$username = "user"; //phpCAS::getUser();
+include_once("includes/cas.php");
+$username = phpCAS::getUser();
 include_once("includes/db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -63,7 +63,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     <meta property="og:image:alt" content="Logo of Citations Magistrales">
 
     <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/ProjectSupport/<?php echo $websiteTagSuffix ?>" />
-    <meta data-react-helmet="true" name="theme-color" content="#FAA916" />
+    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
 </head>
 
 <body>
