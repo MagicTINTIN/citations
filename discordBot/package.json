@@ -1,0 +1,28 @@
+{
+  "name": "immatricat",
+  "version": "1.0.0",
+  "description": "A weird cat that do stats on Lithuanian car plates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicTINTIN/Immatricat.git"
+  },
+  "keywords": [
+    "cat",
+    "lithuania",
+    "stats"
+  ],
+  "author": "MagicTINTIN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagicTINTIN/Immatricat/issues"
+  },
+  "homepage": "https://github.com/MagicTINTIN/Immatricat#readme",
+  "dependencies": {
+    "discord.js": "^14.12.1",
+    "fs": "^0.0.1-security"
+  }
+}

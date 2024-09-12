@@ -1,0 +1,25 @@
+{
+    "debugch":"1163857833947836467",
+    "init":{
+        "startInitMsg":"▶️ | Starting Immatricat...\n‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾",
+        "endInitMsg":"___________________\n✅ | Immatricat is ready"
+    },
+    "stop":{
+        "durationmsg":"⏱️ | Stopping after working during ",
+        "exitingmsg":"🛑 | Stopping Immatricat with code "
+    },
+    "errors":{
+        "debug":"⚙️ | ",
+        "important":"❗ | ",
+        "warning":"⚠️ | ",
+        "mainMsg":"📌 il y a un chat dans la matrice"
+    },
+    "tools":{
+        "file":{
+            "nofile":"📄📤 | Pas de fichier à recharger",
+            "caching":"📄📤💽 | Mise en cache",
+            "saving":"📄📥 | Succès de la sauvegarde du fichier",
+            "errsaving":"📄📥🚫 | Erreur lors de la sauvegarde du fichier"
+        }
+    }
+}

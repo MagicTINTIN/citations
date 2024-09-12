@@ -1,0 +1,202 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Lucida Console', monospace;
+    background: linear-gradient(var(--bgcolorstart) 0%, var(--bgcolorend) 100%);
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+}
+
+main {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* CREATE SESSION */
+
+#createsession, #plateform, #endform, #seestatsform, #farmform {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#sessioninput, #sessionsubmit, #seestats, #farmbutton {
+    font-family: 'Lucida Console', monospace;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: content-box;
+    width: calc(80vw - 20px);
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: xx-large;
+    border: 2px solid var(--black);
+}
+
+/* BUTTON MATRIX */
+#multibtn {
+    width: 90vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90vw;
+    margin-bottom: 1vw;
+}
+
+.subchoice {
+    width: calc( 44.5vw - 20px);
+}
+
+.subimport {
+    width: calc( 90vw - 20px);
+    margin: auto;
+}
+
+.subplate {
+    font-size: min( calc(10vw - 20px), calc(8vh - 20px));
+    color:var(--black);
+
+    border-radius: 10px;
+    border: 5px solid var(--black);
+    box-sizing:border-box;
+    filter: saturate(1);
+}
+
+#platesubmitn {
+    background-color: var(--yellow);
+}
+#platesubmitb {
+    background-color: var(--green);
+}
+#platesubmitl {
+    background-color: var(--cyan);
+}
+#platesubmitp {
+    background-color: var(--pink);
+}
+
+.subplate {
+    filter: saturate(1) brightness(1);
+}
+
+.subplate:hover {
+    filter: saturate(1) brightness(.7);
+}
+
+.subplate:active {
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.9);
+}
+
+.subplate:disabled {
+    box-shadow: none;
+    filter: saturate(0);
+    cursor: not-allowed;
+}
+
+/* PLATE VERIFICATION */
+
+#plateinput {
+    font-size: min( calc(25vw - 20px), calc(30vh - 20px));
+}
+
+#importplateinput {
+    font-size: min( calc(10vw - 20px), calc(10vh - 20px));
+}
+
+.plateinput {
+    text-transform:uppercase;
+    font-family: 'Lucida Console', monospace;
+    text-align: center;
+    font-weight: bold;
+
+    box-sizing: content-box;
+    
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    width: calc(90vw - 20px);
+    border-radius: 10px;
+    padding: 5px;
+    border: 5px solid var(--black);
+    box-sizing:content-box;
+
+    color: var(--black);
+    background-color: var(--white);
+}
+
+#plateinput:focus, #plateinput:focus-within {
+    border-width: 5px;
+    border-style: solid;
+}
+
+#plateinput:invalid {
+    border-color: var(--redinput);
+}
+
+#plateinput:valid {
+    border-color: var(--greeninput);
+}
+
+/* STATS */
+
+#stats {
+    color: var(--white);
+    text-align: center;
+    width: 100%;
+    font-size: small;
+}
+
+/* END FORM */
+
+#submitend {
+    text-transform:uppercase;
+    text-align: center;
+    font-weight: bolder;
+    box-sizing: content-box;
+    width: calc(90vw - 20px);
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 5px solid var(--black);
+    box-sizing:content-box;
+    background-color: var(--redinput);
+    color: var(--white);
+}
+
+#output {
+    width: 90vw;
+    background-color: var(--white);
+    color: var(--black);
+
+
+    border-radius: 10px;
+    border: 5px solid var(--black);
+    box-sizing:content-box;
+
+    margin: auto;
+}

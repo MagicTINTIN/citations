@@ -1,0 +1,13 @@
+{
+    "status":
+    {
+        "starting":"waking up...",
+        "exiting":"Stopping after hard working for",
+        "playinglist": [
+            ""
+        ],
+        "listeninglist": [
+            ""
+        ]
+    }
+}
