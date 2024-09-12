@@ -32,7 +32,7 @@ if (isset($_REQUEST['logout'])) {
 
 // for this test, simply print that the authentication was successfull
 ?>
-<html>
+<!-- <html>
   <head>
     <title>phpCAS simple clientphp: CAS version is <b><?php echo phpCAS::getVersion(); ?></b>.</title>
   </head>
@@ -44,14 +44,10 @@ if (isset($_REQUEST['logout'])) {
         <?php
         $attrs = phpCAS::getAttributes();
         print_r($attrs);
-        echo "<hr>";
-        for ($i = 0; $i < sizeof($attrs); $i++) {
-            echo "- " . $attrs[$i] . " : " . phpCAS::getAttribute($attrs[$i]) . "<br>";
-        }
         ?>
     </p>
     
 
     <p><a href="?logout=">Logout</a></p>
   </body>
-</html>
+</html> -->
