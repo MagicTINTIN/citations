@@ -7,13 +7,13 @@ if (isset($_GET["json"])) {
     $citationsStatement = $db->prepare('SELECT * FROM citations');
     $citationsStatement->execute();
     $citations = $citationsStatement->fetchAll();
-    $i=0;
+    $i = 0;
     echo "[";
     foreach ($citations as $key => $value) {
         if ($value["status"] < 1) continue;
         if ($i > 0)
             echo ",";
-        echo "{\"ID\":\"".safeStr($value["ID"])."\"\"author\":\"".safeStr($value["author"])."\",\"citation\":\"".safeStr($value["citation"])."\",\"date\":\"".$value["date"]."\"}";
+        echo "{\"ID\":\"" . safeStr($value["ID"]) . "\"\"author\":\"" . safeStr($value["author"]) . "\",\"citation\":\"" . safeStr($value["citation"]) . "\",\"date\":\"" . $value["date"] . "\"}";
         $i++;
     }
     echo "]";
@@ -45,14 +45,22 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     ]);
     header("Refresh:0");
     exit();
-} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"]) && in_array($username, $promoted)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["delID"]),
-        'status' => 0
+} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"])) {
+    $db = dbConnect();
+    $citationsStatement = $db->prepare('SELECT username FROM citations WHERE ID = :ID');
+    $citationsStatement->execute([
+        'ID' => htmlspecialchars($_POST["delID"])
     ]);
+    $citations = $citationsStatement->fetchAll();
+    if (sizeof($citations) > 0 && in_array($username, $promoted) || $citations[0]["username"] == $username) {
+        $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+        $updatePlates = $db->prepare($sqlQuery);
+        $updatePlates->execute([
+            'ID' => htmlspecialchars($_POST["delID"]),
+            'status' => 0
+        ]);
+    }
 
     header("Refresh:0");
     exit();
