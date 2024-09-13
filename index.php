@@ -1,5 +1,7 @@
 <?php session_start();
 include_once("includes/cas.php");
+$promoted = array('serviere', 'v_lasser', 'rebillar');
+$admin = array('serviere');
 $username = phpCAS::getUser();
 include_once("includes/db.php");
 include_once("includes/time.php");
@@ -7,6 +9,10 @@ $db = dbConnect();
 
 if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
+    if (strlen(htmlspecialchars($_POST["citationInput"])) >= 4096 || strlen(htmlspecialchars($_POST["authorInput"])) >= 255) {
+        header("Refresh:0");
+        exit();
+    }
 
     $sqlQuery = 'INSERT INTO citations(date, citation, author, username) VALUES (:date, :citation, :author, :username)';
 
@@ -92,12 +98,54 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
             $citations = $citationsStatement->fetchAll();
 
             foreach (array_reverse($citations) as $key => $value) {
-                if ($value["status"] == 1) {
+                if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
+                    
+                    if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
+                        echo "<li class='deletedCitation'>";
+                    } else if ($value["status"] == 1 && (isset($_GET["mod"])  || isset($_GET["unverified"]))) {
+                        echo "<li class='unverifiedCitation'>";
+                    } else if ($value["status"] > 1 && (isset($_GET["mod"]))) {
+                        echo "<li class='verifiedCitation'>";
+                    }
+                    if (isset($_GET["mod"])  || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
+                        echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
+                        <div class='authorDateZone zone adzCitation'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
+                        if (in_array($username, $promoted) || $username == $value["username"]) {
+                            if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
+            ?>
+                                <div class="delMsgDiv">
+                                    <span onclick="createMessage('confirm', 'Restore citation ?', 'Are you sure you want to restore this citation?', 'restoremsg', 'Restore', 'resID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Restore</span>
+                                </div>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="delMsgDiv">
+                                    <span onclick="createMessage('confirm', 'Delete citation ?', 'Are you sure you want to delete this citation?', 'deletemsg', 'Delete', 'delID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Delete</span>
+                                </div>
+                            <?php
+                            }
+                            if ($value["status"] == 1 && (isset($_GET["mod"])  || isset($_GET["unverified"]))) {
+                            ?>
+                                <div class="delMsgDiv">
+                                    <span onclick="createMessage('confirm', 'Verify citation ?', 'Are you sure you want to verify this citation?', 'verifymsg', 'Verify', 'verID', '<?php echo $value['ID']; ?>')" class="verMsgSpan">Verify</span>
+                                </div>
+                            <?php
+                            } else if ($value["status"] > 1 && isset($_GET["mod"])) {
+                            ?>
+                                <div class="delMsgDiv">
+                                    <span onclick="createMessage('confirm', 'Unverify citation ?', 'Are you sure you want to unverify this citation?', 'unverifymsg', 'Unverify', 'unverID', '<?php echo $value['ID']; ?>')" class="unverMsgSpan">Unverify</span>
+                                </div>
+                        <?php
+                            }
+                        }
+                    }
+                    echo "</div></li>";
+                } else if ($value["status"] >= 1) {
                     echo "<li>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
-                    if (in_array($username, array('serviere', 'v_lasser')) || $username == $value["username"]) {
-            ?>
+                    if (in_array($username, $promoted) || $username == $value["username"]) {
+                        ?>
                         <div class="delMsgDiv">
                             <span onclick="createMessage('confirm', 'Delete citation ?', 'Are you sure you want to delete this citation?', 'deletemsg', 'Delete', 'delID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Delete</span>
                         </div>
