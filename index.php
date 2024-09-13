@@ -68,7 +68,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="Logo of Citations Magistrales">
 
-    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/ProjectSupport/<?php echo $websiteTagSuffix ?>" />
+    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
     <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
 </head>
 
@@ -99,7 +99,9 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
 
             foreach (array_reverse($citations) as $key => $value) {
                 if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
-                    
+                    if (in_array($username, $admin) && $value["status"] < 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
+                        echo "<li class='ultradeletedCitation'>";
+                    }
                     if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
                         echo "<li class='deletedCitation'>";
                     } else if ($value["status"] == 1 && (isset($_GET["mod"])  || isset($_GET["unverified"]))) {
@@ -107,18 +109,28 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
                     } else if ($value["status"] > 1 && (isset($_GET["mod"]))) {
                         echo "<li class='verifiedCitation'>";
                     }
-                    if (isset($_GET["mod"])  || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
+                    if ((isset($_GET["mod"]) && $value["status"] >= 0) || (isset($_GET["ultradeleted"]) && $value["status"] < 0 && in_array($username, $admin)) || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'><span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
                         if (in_array($username, $promoted) || $username == $value["username"]) {
-                            if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
-            ?>
+                            if (isset($_GET["ultradeleted"]) && $value["status"] < 0 && in_array($username, $admin)) { ?>
+                                <div class="delMsgDiv">
+                                    <span onclick="createMessage('confirm', 'Unultradelete citation ?', 'Are you sure you want to unultradelete this citation?', 'ultrarestoremsg', 'Unultradelete', 'uresID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Unultradelete</span>
+                                </div>
+                            <?php } else if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
+                            ?>
                                 <div class="delMsgDiv">
                                     <span onclick="createMessage('confirm', 'Restore citation ?', 'Are you sure you want to restore this citation?', 'restoremsg', 'Restore', 'resID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Restore</span>
                                 </div>
-                            <?php
+                                <?php
+                                if (in_array($username, $admin)) {
+                                ?>
+                                    <div class="delMsgDiv">
+                                        <span onclick="createMessage('confirm', 'Ultradelete citation ?', 'Are you sure you want to ultradelete this citation?', 'ultradeletemsg', 'Ultradelete', 'udelID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Ultradelete</span>
+                                    </div>
+                                <?php }
                             } else {
-                            ?>
+                                ?>
                                 <div class="delMsgDiv">
                                     <span onclick="createMessage('confirm', 'Delete citation ?', 'Are you sure you want to delete this citation?', 'deletemsg', 'Delete', 'delID', '<?php echo $value['ID']; ?>')" class="delMsgSpan">Delete</span>
                                 </div>

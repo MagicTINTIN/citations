@@ -139,6 +139,10 @@ h1 {
     margin-bottom: 4vh;
 }
 
+.ultradeletedCitation {
+    color: rgba(214, 0, 0, 0.747);
+}
+
 .deletedCitation {
     color: rgba(255, 117, 117, 0.911);
 }
