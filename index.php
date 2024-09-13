@@ -25,13 +25,68 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     ]);
     header("Refresh:0");
     exit();
-} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"])) {
+} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"]) && in_array($username, $promoted)) {
     $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
 
     $updatePlates = $db->prepare($sqlQuery);
     $updatePlates->execute([
         'ID' => htmlspecialchars($_POST["delID"]),
         'status' => 0
+    ]);
+
+    header("Refresh:0");
+    exit();
+} else if (isset($_POST["ultradeletemsg"]) && isset($_POST["udelID"]) && in_array($username, $admin)) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'ID' => htmlspecialchars($_POST["udelID"]),
+        'status' => -1
+    ]);
+
+    header("Refresh:0");
+    exit();
+} else if (isset($_POST["restoremsg"]) && isset($_POST["resID"]) && in_array($username, $promoted)) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'ID' => htmlspecialchars($_POST["resID"]),
+        'status' => 1
+    ]);
+
+    header("Refresh:0");
+    exit();
+} else if (isset($_POST["ultrarestoremsg"]) && isset($_POST["uresID"]) && in_array($username, $admin)) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'ID' => htmlspecialchars($_POST["uresID"]),
+        'status' => 0
+    ]);
+
+    header("Refresh:0");
+    exit();
+} else if (isset($_POST["verifymsg"]) && isset($_POST["verID"]) && in_array($username, $promoted)) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'ID' => htmlspecialchars($_POST["verID"]),
+        'status' => 2
+    ]);
+
+    header("Refresh:0");
+    exit();
+} else if (isset($_POST["unverifymsg"]) && isset($_POST["unverID"]) && in_array($username, $promoted)) {
+    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+    $updatePlates = $db->prepare($sqlQuery);
+    $updatePlates->execute([
+        'ID' => htmlspecialchars($_POST["unverID"]),
+        'status' => 1
     ]);
 
     header("Refresh:0");
