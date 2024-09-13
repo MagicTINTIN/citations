@@ -1,4 +1,24 @@
 <?php session_start();
+if (isset($_GET["json"])) {
+
+    include_once("includes/db.php");
+    $db = dbConnect();
+    $db = dbConnect();
+    $citationsStatement = $db->prepare('SELECT * FROM citations');
+    $citationsStatement->execute();
+    $citations = $citationsStatement->fetchAll();
+    $i=0;
+    echo "[";
+    foreach ($citations as $key => $value) {
+        if ($value["status"] < 1) continue;
+        if ($i > 0)
+            echo ",";
+        echo "{\"ID\":\"".safeStr($value["ID"])."\"\"author\":\"".safeStr($value["author"])."\",\"citation\":\"".safeStr($value["citation"])."\",\"date\":\"".$value["date"]."\"}";
+        $i++;
+    }
+    echo "]";
+    exit();
+}
 include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
