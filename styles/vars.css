@@ -22,3 +22,8 @@
     font-family: "citationFont";
     src: url("./LTPerfume-2.ttf");
 }
+
+@font-face {
+    font-family: "signatureFont";
+    src: url("./Thesignature.ttf");
+}
