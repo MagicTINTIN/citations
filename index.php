@@ -3,6 +3,7 @@ function safeStr($input) : string
 {
     return str_replace("\n","\\n",str_replace("\\","\\\\",$input));
 }
+
 if (isset($_GET["json"])) {
 
     include_once("includes/db.php");
