@@ -154,3 +154,14 @@ h1 {
 .verifiedCitation {
     color: rgb(140, 255, 117);
 }
+
+.writer {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.writer span {
+    color: rgb(216, 216, 216);
+    font-size: small;
+}
