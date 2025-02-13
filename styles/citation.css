@@ -71,7 +71,8 @@
 
 .input:hover,
 textarea:hover {
-    background-color: rgba(155, 155, 155, 0.185);
+    /* background-color: rgba(155, 155, 155, 0.185); */
+    background-color: rgba(255, 255, 255, 0.185);
 }
 
 .citationCommon {
@@ -164,4 +165,40 @@ h1 {
 .writer span {
     color: rgb(216, 216, 216);
     font-size: small;
+}
+
+.reactions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.reactionCounter {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.reactionNumber {
+    margin: 3px;
+    padding: 5px;
+    font-size: larger;
+}
+
+.spanButtonReaction {
+    margin: 3px;
+    padding: 5px;
+    font-size: larger;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.spanButtonReaction:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.spanButtonReaction:active {
+    background-color: rgba(0, 0, 0, 0.2);
 }
