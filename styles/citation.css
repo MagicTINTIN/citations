@@ -1,3 +1,13 @@
+.unselectable, img, header, .spanButtonReaction, .reactionNumber {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+
 .citationZone {
     display: flex;
     flex-direction: row;
