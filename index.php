@@ -125,6 +125,34 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
 
     header("Refresh:0");
     exit();
+} else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"]) && in_array($username, $promoted)) {
+    $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
+    if ($likeValue < -1 || $likeValue > 1) {
+        header("Refresh:0");
+        exit();
+    }
+
+    $sqlQuery = 'UPDATE citationsCounters SET likeValue = :likeValue WHERE citationID = :citationID AND username = :username';
+
+    $updateReactions = $db->prepare($sqlQuery);
+    $updateReactions->execute([
+        'citationID' => htmlspecialchars($_POST["citationID"]),
+        'username' => $username,
+        'likeValue' => $likeValue
+    ]);
+    if ($updateReactions->rowCount() == 0) {
+        $sqlQuery = 'INSERT INTO citationsCounters(citationID, username, likeValue) VALUES (:citationID, :username, :likeValue)';
+
+        $insertReaction = $db->prepare($sqlQuery);
+        $insertReaction->execute([
+            'citationID' => htmlspecialchars($_POST["citationID"]),
+            'username' => $username,
+            'likeValue' => $likeValue
+        ]);
+    }
+
+    header("Refresh:0");
+    exit();
 }
 
 function reactions(): void
