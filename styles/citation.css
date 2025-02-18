@@ -235,3 +235,22 @@ h1 {
 .spanButtonReaction:active {
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+#sortby {
+    width: 90vw;
+    margin: auto;
+    font-size: x-small;
+}
+
+#sortby input {
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#sortby input:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}

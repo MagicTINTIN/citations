@@ -1,4 +1,7 @@
 <?php session_start();
+if (!isset($_SESSION["SORT-BY"]))
+    $_SESSION["SORT-BY"] = "PLUS RÉCENT";
+
 function safeStr($input): string
 {
     return str_replace("\n", "\\n", str_replace("\\", "\\\\", $input));
@@ -24,14 +27,24 @@ if (isset($_GET["json"])) {
     echo "]";
     exit();
 }
-// include_once("includes/cas.php");
+include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
-$username = "serviere";
-// $username = phpCAS::getUser();
+// $username = "serviere";
+$username = phpCAS::getUser();
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
+
+if (isset($_POST["sort-by"])) {
+    if ($_SESSION["SORT-BY"] == "NOTE")
+        $_SESSION["SORT-BY"] = "PLUS RÉCENT";
+    else
+        $_SESSION["SORT-BY"] = "NOTE";
+
+    header("Refresh:0");
+    exit();
+}
 
 if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
@@ -130,7 +143,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
     if ($likeValue < -1 || $likeValue > 1) {
         // header("Refresh:0");
-        header('Location: #cit'.$citIDValue);
+        header('Location: #cit' . $citIDValue);
         exit();
     }
     // {$date->format('Y-m-d H:i:s')}
@@ -155,7 +168,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     }
 
     // header("Refresh:0");
-    header('Location: #cit'.$citIDValue);
+    header('Location: #cit' . $citIDValue);
     exit();
 }
 
@@ -279,10 +292,21 @@ function reactions(int $citationNum, $db, $username): void
             </div>
 
         </form>
+        <form method="post" id="sortby">
+            <span>TRIER PAR : </span>
+            <input type="submit" name="sort-by" value="<?php echo $_SESSION["SORT-BY"] ?>" class="sortbyButtton">
+        </form>
         <ul>
             <?php
             $db = dbConnect();
-            $citationsStatement = $db->prepare('SELECT * FROM citations');
+            if ($_SESSION["SORT-BY"] == "NOTE")
+                $citationsStatement = $db->prepare('SELECT c.*, COALESCE(SUM(cc.likeValue), 0) AS totalLikes
+FROM citations c
+LEFT JOIN citationsCounters cc ON c.ID = cc.citationID
+GROUP BY c.ID
+ORDER BY totalLikes ASC;');
+            else
+                $citationsStatement = $db->prepare('SELECT * FROM citations');
             $citationsStatement->execute();
             $citations = $citationsStatement->fetchAll();
 
