@@ -1,4 +1,8 @@
-<?php session_start();
+<?php
+
+use PSpell\Config;
+
+session_start();
 if (!isset($_SESSION["SORT-BY"]))
     $_SESSION["SORT-BY"] = "PLUS RÉCENT";
 
@@ -61,12 +65,13 @@ if (isset($_GET["json"])) {
     <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
 </head>
 <?php
-
-include_once("includes/cas.php");
-$promoted = array('serviere', 'v_lasser', 'rebillar');
-$admin = array('serviere');
-$username = "serviere";
-$username = phpCAS::getUser();
+if (isset($_SESSION["connected"])) {
+    include_once("includes/cas.php");
+    $promoted = array('serviere', 'v_lasser', 'rebillar');
+    $admin = array('serviere');
+    $username = "serviere";
+    // $username = phpCAS::getUser();
+}
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -81,130 +86,132 @@ if (isset($_POST["sort-by"])) {
     exit();
 }
 
-if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
+if (!isset($_SESSION["connected"])) {
+    if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
-    if (strlen(htmlspecialchars($_POST["citationInput"])) >= 4096 || strlen(htmlspecialchars($_POST["authorInput"])) >= 255) {
+        if (strlen(htmlspecialchars($_POST["citationInput"])) >= 4096 || strlen(htmlspecialchars($_POST["authorInput"])) >= 255) {
+            header("Refresh:0");
+            exit();
+        }
+
+        $sqlQuery = 'INSERT INTO citations(date, citation, author, username) VALUES (:date, :citation, :author, :username)';
+
+        $insertCitation = $db->prepare($sqlQuery);
+        $insertCitation->execute([
+            'date' => htmlspecialchars($_POST["dateInput"]),
+            'citation' => htmlspecialchars($_POST["citationInput"]),
+            'author' => htmlspecialchars($_POST["authorInput"]),
+            'username' => $username
+        ]);
         header("Refresh:0");
         exit();
-    }
+    } else if (isset($_POST["deletemsg"]) && isset($_POST["delID"])) {
+        $db = dbConnect();
+        $citationsStatement = $db->prepare('SELECT username FROM citations WHERE ID = :ID');
+        $citationsStatement->execute([
+            'ID' => htmlspecialchars($_POST["delID"])
+        ]);
+        $citations = $citationsStatement->fetchAll();
+        if (sizeof($citations) > 0 && in_array($username, $promoted) || $citations[0]["username"] == $username) {
+            $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
 
-    $sqlQuery = 'INSERT INTO citations(date, citation, author, username) VALUES (:date, :citation, :author, :username)';
+            $updatePlates = $db->prepare($sqlQuery);
+            $updatePlates->execute([
+                'ID' => htmlspecialchars($_POST["delID"]),
+                'status' => 0
+            ]);
+        }
 
-    $insertCitation = $db->prepare($sqlQuery);
-    $insertCitation->execute([
-        'date' => htmlspecialchars($_POST["dateInput"]),
-        'citation' => htmlspecialchars($_POST["citationInput"]),
-        'author' => htmlspecialchars($_POST["authorInput"]),
-        'username' => $username
-    ]);
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["deletemsg"]) && isset($_POST["delID"])) {
-    $db = dbConnect();
-    $citationsStatement = $db->prepare('SELECT username FROM citations WHERE ID = :ID');
-    $citationsStatement->execute([
-        'ID' => htmlspecialchars($_POST["delID"])
-    ]);
-    $citations = $citationsStatement->fetchAll();
-    if (sizeof($citations) > 0 && in_array($username, $promoted) || $citations[0]["username"] == $username) {
+        header("Refresh:0");
+        exit();
+    } else if (isset($_POST["ultradeletemsg"]) && isset($_POST["udelID"]) && in_array($username, $admin)) {
         $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
 
         $updatePlates = $db->prepare($sqlQuery);
         $updatePlates->execute([
-            'ID' => htmlspecialchars($_POST["delID"]),
+            'ID' => htmlspecialchars($_POST["udelID"]),
+            'status' => -1
+        ]);
+
+        header("Refresh:0");
+        exit();
+    } else if (isset($_POST["restoremsg"]) && isset($_POST["resID"]) && in_array($username, $promoted)) {
+        $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+        $updatePlates = $db->prepare($sqlQuery);
+        $updatePlates->execute([
+            'ID' => htmlspecialchars($_POST["resID"]),
+            'status' => 1
+        ]);
+
+        header("Refresh:0");
+        exit();
+    } else if (isset($_POST["ultrarestoremsg"]) && isset($_POST["uresID"]) && in_array($username, $admin)) {
+        $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+        $updatePlates = $db->prepare($sqlQuery);
+        $updatePlates->execute([
+            'ID' => htmlspecialchars($_POST["uresID"]),
             'status' => 0
         ]);
-    }
 
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["ultradeletemsg"]) && isset($_POST["udelID"]) && in_array($username, $admin)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["udelID"]),
-        'status' => -1
-    ]);
-
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["restoremsg"]) && isset($_POST["resID"]) && in_array($username, $promoted)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["resID"]),
-        'status' => 1
-    ]);
-
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["ultrarestoremsg"]) && isset($_POST["uresID"]) && in_array($username, $admin)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["uresID"]),
-        'status' => 0
-    ]);
-
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["verifymsg"]) && isset($_POST["verID"]) && in_array($username, $promoted)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["verID"]),
-        'status' => 2
-    ]);
-
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["unverifymsg"]) && isset($_POST["unverID"]) && in_array($username, $promoted)) {
-    $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
-
-    $updatePlates = $db->prepare($sqlQuery);
-    $updatePlates->execute([
-        'ID' => htmlspecialchars($_POST["unverID"]),
-        'status' => 1
-    ]);
-
-    header("Refresh:0");
-    exit();
-} else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"]) && in_array($username, $promoted)) {
-    $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
-    $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
-    if ($likeValue < -1 || $likeValue > 1) {
-        // header("Refresh:0");
-        header('Location: #cit' . $citIDValue);
+        header("Refresh:0");
         exit();
-    }
-    // {$date->format('Y-m-d H:i:s')}
-    $now = date('Y-m-d H:i:s');
-    $sqlQuery = "UPDATE citationsCounters SET likeValue = :likeValue, time = '$now' WHERE citationID = :citationID AND username = :username";
+    } else if (isset($_POST["verifymsg"]) && isset($_POST["verID"]) && in_array($username, $promoted)) {
+        $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
 
-    $updateReactions = $db->prepare($sqlQuery);
-    $updateReactions->execute([
-        'citationID' => $citIDValue,
-        'username' => $username,
-        'likeValue' => $likeValue
-    ]);
-    if ($updateReactions->rowCount() == 0) {
-        $sqlQuery = 'INSERT INTO citationsCounters(citationID, username, likeValue) VALUES (:citationID, :username, :likeValue)';
+        $updatePlates = $db->prepare($sqlQuery);
+        $updatePlates->execute([
+            'ID' => htmlspecialchars($_POST["verID"]),
+            'status' => 2
+        ]);
 
-        $insertReaction = $db->prepare($sqlQuery);
-        $insertReaction->execute([
+        header("Refresh:0");
+        exit();
+    } else if (isset($_POST["unverifymsg"]) && isset($_POST["unverID"]) && in_array($username, $promoted)) {
+        $sqlQuery = 'UPDATE citations SET status = :status WHERE ID = :ID';
+
+        $updatePlates = $db->prepare($sqlQuery);
+        $updatePlates->execute([
+            'ID' => htmlspecialchars($_POST["unverID"]),
+            'status' => 1
+        ]);
+
+        header("Refresh:0");
+        exit();
+    } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"]) && in_array($username, $promoted)) {
+        $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
+        $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
+        if ($likeValue < -1 || $likeValue > 1) {
+            // header("Refresh:0");
+            header('Location: #cit' . $citIDValue);
+            exit();
+        }
+        // {$date->format('Y-m-d H:i:s')}
+        $now = date('Y-m-d H:i:s');
+        $sqlQuery = "UPDATE citationsCounters SET likeValue = :likeValue, time = '$now' WHERE citationID = :citationID AND username = :username";
+
+        $updateReactions = $db->prepare($sqlQuery);
+        $updateReactions->execute([
             'citationID' => $citIDValue,
             'username' => $username,
             'likeValue' => $likeValue
         ]);
-    }
+        if ($updateReactions->rowCount() == 0) {
+            $sqlQuery = 'INSERT INTO citationsCounters(citationID, username, likeValue) VALUES (:citationID, :username, :likeValue)';
 
-    // header("Refresh:0");
-    header('Location: #cit' . $citIDValue);
-    exit();
+            $insertReaction = $db->prepare($sqlQuery);
+            $insertReaction->execute([
+                'citationID' => $citIDValue,
+                'username' => $username,
+                'likeValue' => $likeValue
+            ]);
+        }
+
+        // header("Refresh:0");
+        header('Location: #cit' . $citIDValue);
+        exit();
+    }
 }
 
 function reactions(int $citationNum, $db, $username): void
@@ -275,29 +282,57 @@ function reactions(int $citationNum, $db, $username): void
 <?php
 }
 
+function reactionsNotConnected(int $citationNum, $db): void
+{
+    $citationReactionsStatement = $db->prepare('SELECT * FROM citationsCounters WHERE citationID = :citationID');
+    $citationReactionsStatement->execute([
+        'citationID' => $citationNum
+    ]);
+    $citationReactions = $citationReactionsStatement->fetchAll();
+
+    $totalLikesRatio = 0;
+
+    foreach ($citationReactions as $key => $value) {
+        $totalLikesRatio += $value["likeValue"];
+    }
 ?>
+    <div class="reactions">
+        <div class="reactionCounter">
+            <span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter')">△</span><span class="reactionNumber"><?php echo $totalLikesRatio ?></span><span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter !')">▽</span>
+        </div>
+        <!-- ▲⇧⬆1⬇⇩▼ -->
+        <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
+    </div>
+<?php
+}
+
+
+?>
+
 <body>
     <?php include_once("./includes/nojs.php"); ?>
     <?php include_once("./includes/infoanderror.php"); ?>
     <main>
         <h1>Citations Magistrales</h1>
         <p class="underH1" title="Tant que ça ne porte pas atteinte à l'intégrité de la personne... bien évidemment">Enregistrez les pépites entendues en CM</p>
-        <form method="post" class="citationForm">
-            <div class='citationZone zone'>
-                <!-- <span class='citationCommon openingInput'>"</span> -->
-                <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea>
-                <!-- <span class='citationCommon closingInput'>"</span> -->
-            </div>
+        <?php if (isset($_SESSION["connected"])) { ?>
+            <form method="post" class="citationForm">
+                <div class='citationZone zone'>
+                    <!-- <span class='citationCommon openingInput'>"</span> -->
+                    <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea>
+                    <!-- <span class='citationCommon closingInput'>"</span> -->
+                </div>
 
-            <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
-                <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
-            </div>
+                <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
+                    <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
+                </div>
 
-            <div class='zone3'>
-                <input type="submit" class="input citationSubmit" id="newCitationSubmit" value="Ajouter la citation" name="newCitationSubmit">
-            </div>
+                <div class='zone3'>
+                    <input type="submit" class="input citationSubmit" id="newCitationSubmit" value="Ajouter la citation" name="newCitationSubmit">
+                </div>
 
-        </form>
+            </form>
+        <?php } else { ?> <?php } ?>
         <form method="post" id="sortby">
             <span>TRIER PAR : </span>
             <input type="submit" name="sort-by" value="<?php echo $_SESSION["SORT-BY"] ?>" class="sortbyButtton">
@@ -324,7 +359,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                 $datetime = DateTime::createFromFormat('Y-m-d', $value["date"]);
                 $formattedDate = $datetime->format('j M Y');
 
-                if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
+                if (isset($_SESSION["connected"]) && in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
                     if (in_array($username, $admin) && $value["status"] < 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
                         echo "<li id='cit" . $value["ID"] . "' class='ultradeletedCitation'>";
                     }
@@ -339,7 +374,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
                         reactions($value['ID'], $db, $username);
-                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
+                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
                             <div class="writer">
@@ -387,12 +422,12 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         }
                     }
                     echo "</div></li>";
-                } else if ($value["status"] >= 1) {
+                } else if (isset($_SESSION["connected"]) && $value["status"] >= 1) {
                     echo "<li id='cit" . $value["ID"] . "''>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
                         <div class="delMsgDiv">
@@ -400,6 +435,14 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         </div>
             <?php
                     }
+                    echo "</div></li>";
+                } else if ($value["status"] >= 1) {
+                    echo "<li id='cit" . $value["ID"] . "''>
+                <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
+                <div class='authorDateZone zone adzCitation'>";
+                    reactionsNotConnected($value["ID"], $db);
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
+
                     echo "</div></li>";
                 }
             }

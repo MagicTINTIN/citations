@@ -30,7 +30,7 @@
         document.getElementById(toclose.id.slice(0, -5)).style.transform = "scale(0)";
     }
 
-    function createMessage(type, title, message = "", action = "", btnName="Confirm", name = "", value = "") {
+    function createMessage(type, title, message = "", action = "", btnName = "Confirm", name = "", value = "") {
         typeid = type[0].toUpperCase() + type.substr(1).toLowerCase();
         let popup = document.getElementById(`popUp${typeid}Message`)
         document.getElementById(`content${typeid}Title`).innerText = title.toUpperCase();
@@ -47,6 +47,10 @@
         popup.style.display = "flex";
         popup.style.transform = "scale(1) rotate(0deg)";
         animateCSS(`popUp${typeid}Message`, `anim${typeid}`, 800);
+    }
+
+    function youNeedToBeConnected(reason) {
+        createMessage("error", "Connectez-vous !", "Vous devez être connecté pour " + reason);
     }
 
     <?php
