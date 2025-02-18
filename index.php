@@ -24,11 +24,11 @@ if (isset($_GET["json"])) {
     echo "]";
     exit();
 }
-include_once("includes/cas.php");
+// include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
-// $username = "serviere";
-$username = phpCAS::getUser();
+$username = "serviere";
+// $username = phpCAS::getUser();
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -181,7 +181,7 @@ function reactions(int $citationNum, $db, $username): void
             }
 
             if ($userLikeValue == 1) { ?>
-                <form method="post">
+                <form method="post" class="shiny">
                     <input type='hidden' name="likeValue" value="0">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -202,7 +202,7 @@ function reactions(int $citationNum, $db, $username): void
             <?php
             if ($userLikeValue == -1) {
             ?>
-                <form method="post">
+                <form method="post" class="shiny">
                     <input type='hidden' name="likeValue" value="0">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -289,20 +289,20 @@ function reactions(int $citationNum, $db, $username): void
             foreach (array_reverse($citations) as $key => $value) {
                 if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
                     if (in_array($username, $admin) && $value["status"] < 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
-                        echo "<li id='cit" . $value["ID"] . " class='ultradeletedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . "' class='ultradeletedCitation'>";
                     }
                     if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
-                        echo "<li id='cit" . $value["ID"] . " class='deletedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . "' class='deletedCitation'>";
                     } else if ($value["status"] == 1 && (isset($_GET["mod"])  || isset($_GET["unverified"]))) {
-                        echo "<li id='cit" . $value["ID"] . " class='unverifiedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . "' class='unverifiedCitation'>";
                     } else if ($value["status"] > 1 && (isset($_GET["mod"]))) {
-                        echo "<li id='cit" . $value["ID"] . " class='verifiedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . "' class='verifiedCitation'>";
                     }
                     if ((isset($_GET["mod"]) && $value["status"] >= 0) || (isset($_GET["ultradeleted"]) && $value["status"] < 0 && in_array($username, $admin)) || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
                         reactions($value['ID'], $db, $username);
-                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
+                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $value["date"] . "";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
                             <div class="writer">
@@ -351,11 +351,11 @@ function reactions(int $citationNum, $db, $username): void
                     }
                     echo "</div></li>";
                 } else if ($value["status"] >= 1) {
-                    echo "<li id='cit" . $value["ID"] . "'>
+                    echo "<li id='cit" . $value["ID"] . "''>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $value["date"] . "";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
                         <div class="delMsgDiv">

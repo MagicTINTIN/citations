@@ -19,9 +19,28 @@
 }
 
 @font-face {
+    font-family: "citationFont2";
+    src: url("./Mayonice.ttf");
+}
+
+
+
+@font-face {
+    font-family: "citationFont3";
+    src: url("./Miama.ttf");
+}
+
+@font-face {
     font-family: "citationFont";
+    src: url("./Tahu.ttf");
+}
+
+
+@font-face {
+    font-family: "oldCitationFont";
     src: url("./LTPerfume-2.ttf");
 }
+
 
 @font-face {
     font-family: "signatureFont";

@@ -7,17 +7,24 @@
   -ms-user-select: none;
 }
 
+li {
+    margin-top: 7vh;
+    margin-bottom: 7vh;
+    /* display: flex;
+    flex-direction: column; */
+}
 
 .citationZone {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-bottom: 1vh;
 }
 
 .authorDateZone {
     display: flex;
     flex-direction: row;
-    justify-content: right;
+    justify-content: space-between;
 }
 
 .authorDateZoneInput {
@@ -27,7 +34,7 @@
 }
 
 .adzCitation {
-    transform: translateY(min(-2vw, -2vh));
+    transform: translateY(min(-1.2vw, -1.2vh));
 }
 
 .citationInput {
@@ -86,12 +93,22 @@ textarea:hover {
 }
 
 .citationCommon {
-    font-family: 'citationFont';
+    font-family: 'citationFont', 'citationFont2';
     font-size: max(5vw, 5vh);
+    text-shadow: 0 10px 60px white;
+}
+
+.shiny {
+    text-shadow: 0 0 10px white;
+}
+
+.shiny input {
+    text-shadow: 0 0 10px rgb(0, 17, 53);
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.548);
 }
 
 .authorDateCommon {
-    font-size: x-large;
+    font-size: larger;
 }
 
 .zone {
@@ -137,7 +154,7 @@ textarea:hover {
 }
 
 h1 {
-    font-family: 'citationFont';
+    font-family: 'citationFont', 'citationFont2';
     font-size: max(5vw, 5vh);
     text-align: center;
     margin-bottom: 0;
@@ -150,20 +167,24 @@ h1 {
     margin-bottom: 4vh;
 }
 
-.ultradeletedCitation {
+.ultradeletedCitation .citationZone span {
     color: rgba(214, 0, 0, 0.747);
+    text-shadow: 0 10px 60px rgba(214, 0, 0, 0.747);
 }
 
-.deletedCitation {
+.deletedCitation .citationZone span {
     color: rgba(255, 117, 117, 0.911);
+    text-shadow: 0 10px 60px rgba(255, 117, 117, 0.911);
 }
 
-.unverifiedCitation {
+.unverifiedCitation .citationZone span {
     color: rgb(255, 187, 0);
+    text-shadow: 0 10px 60px rgb(255, 187, 0);
 }
 
-.verifiedCitation {
+.verifiedCitation .citationZone span {
     color: rgb(140, 255, 117);
+    text-shadow: 0 10px 60px rgb(140, 255, 117);
 }
 
 .writer {
