@@ -27,11 +27,46 @@ if (isset($_GET["json"])) {
     echo "]";
     exit();
 }
-// include_once("includes/cas.php");
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <title>Citations Magistrales</title>
+
+    <script src="./scripts/commonhead.js"></script>
+    <link href="./styles/animations.css" rel="stylesheet">
+    <link href="./styles/vars.css" rel="stylesheet">
+    <link href="./styles/issue.css" rel="stylesheet">
+    <link href="./styles/common.css" rel="stylesheet">
+    <link href="./styles/citation.css" rel="stylesheet">
+    <meta name="author" content="MagicTINTIN">
+    <meta name="description" content="Un site pour recenser les pépites entendues en CM">
+
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Citations Magistrales">
+    <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
+
+    <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Logo of Citations Magistrales">
+
+    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
+    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
+</head>
+<?php
+
+include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
 $username = "serviere";
-// $username = phpCAS::getUser();
+$username = phpCAS::getUser();
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -241,39 +276,6 @@ function reactions(int $citationNum, $db, $username): void
 }
 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-    <title>Citations Magistrales</title>
-
-    <script src="./scripts/commonhead.js"></script>
-    <link href="./styles/animations.css" rel="stylesheet">
-    <link href="./styles/vars.css" rel="stylesheet">
-    <link href="./styles/issue.css" rel="stylesheet">
-    <link href="./styles/common.css" rel="stylesheet">
-    <link href="./styles/citation.css" rel="stylesheet">
-    <meta name="author" content="MagicTINTIN">
-    <meta name="description" content="Un site pour recenser les pépites entendues en CM">
-
-    <link rel="icon" type="image/x-icon" href="images/favicon.png">
-
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Citations Magistrales">
-    <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
-
-    <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Logo of Citations Magistrales">
-
-    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
-    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
-</head>
-
 <body>
     <?php include_once("./includes/nojs.php"); ?>
     <?php include_once("./includes/infoanderror.php"); ?>

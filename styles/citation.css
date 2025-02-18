@@ -76,7 +76,7 @@ li {
     background-position: right;
     background-size: 1px 10px;
     background-repeat: repeat-y; */
-    transition: all 0.2s;
+    /* transition: all 0.s; */
 }
 
 #newCitationSubmit {
