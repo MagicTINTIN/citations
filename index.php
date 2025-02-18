@@ -132,8 +132,9 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
         header("Refresh:0");
         exit();
     }
-
-    $sqlQuery = 'UPDATE citationsCounters SET likeValue = :likeValue WHERE citationID = :citationID AND username = :username';
+    // {$date->format('Y-m-d H:i:s')}
+    $now = date('Y-m-d H:i:s');
+    $sqlQuery = "UPDATE citationsCounters SET likeValue = :likeValue, time = '$now' WHERE citationID = :citationID AND username = :username";
 
     $updateReactions = $db->prepare($sqlQuery);
     $updateReactions->execute([
