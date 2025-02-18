@@ -332,7 +332,28 @@ function reactionsNotConnected(int $citationNum, $db): void
                 </div>
 
             </form>
-        <?php } else { ?> <?php } ?>
+        <?php } else { ?>
+            <form method="post" class="citationFormDisabled" title="Connectez-vous pour ajouter de nouvelles citations !">
+                <div class='citationZone zoned'>
+                    <!-- <span class='citationCommon openingInput'>"</span> -->
+                    <textarea disabled oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea>
+                    <!-- <span class='citationCommon closingInput'>"</span> -->
+                </div>
+
+                <div class='authorDateZone authorDateZoneInput zone2d'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
+                    <input disabled type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
+                </div>
+
+                <div class='zone3d'>
+                    <input disabled type="submit" class="input citationSubmit" id="newCitationSubmit" value="Ajouter la citation" name="newCitationSubmit">
+                </div>
+            </form>
+            <form method="post" class="citationConnect">
+                <div class='connectButton'>
+                    <input disabled type="submit" class="connectionButton" id="connection" value="Se connecter" name="connection">
+                </div>
+            </form>
+        <?php } ?>
         <form method="post" id="sortby">
             <span>TRIER PAR : </span>
             <input type="submit" name="sort-by" value="<?php echo $_SESSION["SORT-BY"] ?>" class="sortbyButtton">

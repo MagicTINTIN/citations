@@ -134,19 +134,34 @@ textarea:hover {
     font-size: larger;
 }
 
-.zone {
+.zone, .zoned {
     width: 90vw;
     margin: auto;
 }
 
-.zone2 {
+.zoned {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.zone2, .zone2d {
     width: 80vw;
     margin: auto;
 }
 
-.zone3 {
+.zone2d {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.zone3, .zone3d {
     width: 50vw;
     margin: auto;
+}
+
+.zone3d {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .openingInput {
@@ -157,10 +172,29 @@ textarea:hover {
     transform: translateX(min(-5vw, -5vh));
 }
 
+.citationFormDisabled {
+    background: rgb(88, 88, 88);
+    filter: saturate(0);
+    border-radius: max(1vh, 1vw);
+    width: 90vw;
+    height: 50vh;
+    margin: auto;
+    padding: 10px;
+    pointer-events:none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.citationFormDisabled, .citationFormDisabled div input , .citationFormDisabled ::placeholder {
+    color: #AAAAAA; /* Change 'red' to your desired color */
+}
+
 .citationSubmit {
     width: 100%;
     margin-top: 10px;
-    margin-bottom: calc(10px + 1vh);
+    /* margin-bottom: calc(10px + 1vh); */
     border-radius: max(1vh, 1vw);
 }
 
@@ -279,6 +313,7 @@ h1 {
     width: 90vw;
     margin: auto;
     font-size: x-small;
+    margin-top: calc(10px + 1vh);
 }
 
 #sortby input {
