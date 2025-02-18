@@ -32,46 +32,24 @@ if (isset($_GET["json"])) {
     exit();
 }
 
-?>
-<!DOCTYPE html>
-<html lang="en">
+if (isset($_POST["connection"])) {
+    unset($_POST);
+    $_SESSION["connected"] = true;
+    
+    // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
+    header('Location: #');
+    exit();
+}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-    <title>Citations Magistrales</title>
-
-    <script src="./scripts/commonhead.js"></script>
-    <link href="./styles/animations.css" rel="stylesheet">
-    <link href="./styles/vars.css" rel="stylesheet">
-    <link href="./styles/issue.css" rel="stylesheet">
-    <link href="./styles/common.css" rel="stylesheet">
-    <link href="./styles/citation.css" rel="stylesheet">
-    <meta name="author" content="MagicTINTIN">
-    <meta name="description" content="Un site pour recenser les pépites entendues en CM">
-
-    <link rel="icon" type="image/x-icon" href="images/favicon.png">
-
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Citations Magistrales">
-    <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
-
-    <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Logo of Citations Magistrales">
-
-    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
-    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
-</head>
-<?php
 if (isset($_SESSION["connected"])) {
-    include_once("includes/cas.php");
+    // include_once("includes/cas.php");
     $promoted = array('serviere', 'v_lasser', 'rebillar');
     $admin = array('serviere');
     $username = "serviere";
     // $username = phpCAS::getUser();
+    
 }
+
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -214,6 +192,41 @@ if (!isset($_SESSION["connected"])) {
     }
 }
 
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <title>Citations Magistrales</title>
+
+    <script src="./scripts/commonhead.js"></script>
+    <link href="./styles/animations.css" rel="stylesheet">
+    <link href="./styles/vars.css" rel="stylesheet">
+    <link href="./styles/issue.css" rel="stylesheet">
+    <link href="./styles/common.css" rel="stylesheet">
+    <link href="./styles/citation.css" rel="stylesheet">
+    <meta name="author" content="MagicTINTIN">
+    <meta name="description" content="Un site pour recenser les pépites entendues en CM">
+
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Citations Magistrales">
+    <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
+
+    <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Logo of Citations Magistrales">
+
+    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
+    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
+</head>
+<?php
+
 function reactions(int $citationNum, $db, $username): void
 {
 ?>
@@ -350,7 +363,7 @@ function reactionsNotConnected(int $citationNum, $db): void
             </form>
             <form method="post" class="citationConnect">
                 <div class='connectButton'>
-                    <input disabled type="submit" class="connectionButton" id="connection" value="Se connecter" name="connection">
+                    <input type="submit" class="connectionButton" id="connection" value="Se connecter" name="connection">
                 </div>
             </form>
         <?php } ?>
@@ -395,7 +408,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
                         reactions($value['ID'], $db, $username);
-                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
+                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
                             <div class="writer">
@@ -448,7 +461,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
                         <div class="delMsgDiv">
@@ -462,7 +475,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactionsNotConnected($value["ID"], $db);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "</span>";
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
 
                     echo "</div></li>";
                 }
