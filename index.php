@@ -300,11 +300,15 @@ function reactions(int $citationNum, $db, $username): void
             <?php
             $db = dbConnect();
             if ($_SESSION["SORT-BY"] == "NOTE")
-                $citationsStatement = $db->prepare('SELECT c.*, COALESCE(SUM(cc.likeValue), 0) AS totalLikes
+                $citationsStatement = $db->prepare('SELECT c.*
 FROM citations c
-LEFT JOIN citationsCounters cc ON c.ID = cc.citationID
-GROUP BY c.ID
-ORDER BY totalLikes ASC;');
+LEFT JOIN (
+    SELECT citationID, SUM(likeValue) AS totalLikes
+    FROM citationsCounters
+    GROUP BY citationID
+) cc ON c.ID = cc.citationID
+ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
+');
             else
                 $citationsStatement = $db->prepare('SELECT * FROM citations');
             $citationsStatement->execute();
