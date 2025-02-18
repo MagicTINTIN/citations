@@ -24,12 +24,12 @@ if (isset($_GET["json"])) {
     echo "]";
     exit();
 }
-// include_once("includes/cas.php");
+include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
-$username = "serviere";
-// $username = phpCAS::getUser();
-include_once("includes/db.php");
+// $username = "serviere";
+$username = phpCAS::getUser();
+include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
 
