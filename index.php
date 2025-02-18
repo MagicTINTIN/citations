@@ -127,6 +127,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     exit();
 } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"]) && in_array($username, $promoted)) {
     $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
+    $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
     if ($likeValue < -1 || $likeValue > 1) {
         header("Refresh:0");
         exit();
@@ -136,7 +137,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
 
     $updateReactions = $db->prepare($sqlQuery);
     $updateReactions->execute([
-        'citationID' => htmlspecialchars($_POST["citationID"]),
+        'citationID' => $citIDValue,
         'username' => $username,
         'likeValue' => $likeValue
     ]);
@@ -145,7 +146,7 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
 
         $insertReaction = $db->prepare($sqlQuery);
         $insertReaction->execute([
-            'citationID' => htmlspecialchars($_POST["citationID"]),
+            'citationID' => $citIDValue,
             'username' => $username,
             'likeValue' => $likeValue
         ]);
@@ -155,15 +156,70 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     exit();
 }
 
-function reactions(): void
+function reactions(int $citationNum, $db, $username): void
 {
 ?>
     <div class="reactions">
         <div class="reactionCounter">
-            <span class="spanButtonReaction">△</span><span class="reactionNumber">0</span><span class="spanButtonReaction">▽</span>
+            <?php
+            $citationReactionsStatement = $db->prepare('SELECT * FROM citationsCounters WHERE citationID = :citationID');
+            $citationReactionsStatement->execute([
+                'citationID' => $citationNum
+            ]);
+            $citationReactions = $citationReactionsStatement->fetchAll();
+
+            $userLikeValue = 0;
+            $totalLikesRatio = 0;
+
+            foreach ($citationReactions as $key => $value) {
+                if ($value["username"] == $username)
+                    $userLikeValue = $value["likeValue"];
+                $totalLikesRatio += $value["likeValue"];
+            }
+
+            if ($userLikeValue == 1) { ?>
+                <form method="post">
+                    <input type='hidden' name="likeValue" value="0">
+                    <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
+
+                    <input type="submit" name="updateReaction" value="▲" class="spanButtonReaction">
+                </form>
+            <?php
+            } else {
+            ?>
+                <form method="post">
+                    <input type='hidden' name="likeValue" value="1">
+                    <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
+
+                    <input type="submit" name="updateReaction" value="△" class="spanButtonReaction">
+                </form>
+            <?php
+            }
+            ?><span class="reactionNumber"><?php echo $totalLikesRatio ?></span>
+            <?php
+            if ($userLikeValue == -1) {
+            ?>
+                <form method="post">
+                    <input type='hidden' name="likeValue" value="0">
+                    <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
+
+                    <input type="submit" name="updateReaction" value="▼" class="spanButtonReaction">
+                </form>
+            <?php
+            } else {
+            ?>
+                <form method="post">
+                    <input type='hidden' name="likeValue" value="-1">
+                    <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
+
+                    <input type="submit" name="updateReaction" value="▽" class="spanButtonReaction">
+                </form>
+            <?php
+            }
+            ?>
         </div>
         <!-- ▲⇧⬆1⬇⇩▼ -->
-        <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span>
+        <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
     </div>
 <?php
 }
@@ -242,7 +298,7 @@ function reactions(): void
                     if ((isset($_GET["mod"]) && $value["status"] >= 0) || (isset($_GET["ultradeleted"]) && $value["status"] < 0 && in_array($username, $admin)) || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
-                        reactions();
+                        reactions($value['ID'], $db, $username);
                         echo "<span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
@@ -295,7 +351,7 @@ function reactions(): void
                     echo "<li>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
-                    reactions();
+                    reactions($value["ID"], $db, $username);
                     echo "<span class='authorDate authorDateCommon'>" . $value["author"] . " - " . $value["date"] . "";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
