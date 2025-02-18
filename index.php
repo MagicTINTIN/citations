@@ -129,7 +129,8 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
     $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
     $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
     if ($likeValue < -1 || $likeValue > 1) {
-        header("Refresh:0");
+        // header("Refresh:0");
+        header('Location: #cit'.$citIDValue);
         exit();
     }
     // {$date->format('Y-m-d H:i:s')}
@@ -153,7 +154,8 @@ if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_PO
         ]);
     }
 
-    header("Refresh:0");
+    // header("Refresh:0");
+    header('Location: #cit'.$citIDValue);
     exit();
 }
 
@@ -287,14 +289,14 @@ function reactions(int $citationNum, $db, $username): void
             foreach (array_reverse($citations) as $key => $value) {
                 if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
                     if (in_array($username, $admin) && $value["status"] < 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
-                        echo "<li class='ultradeletedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . " class='ultradeletedCitation'>";
                     }
                     if ($value["status"] == 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
-                        echo "<li class='deletedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . " class='deletedCitation'>";
                     } else if ($value["status"] == 1 && (isset($_GET["mod"])  || isset($_GET["unverified"]))) {
-                        echo "<li class='unverifiedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . " class='unverifiedCitation'>";
                     } else if ($value["status"] > 1 && (isset($_GET["mod"]))) {
-                        echo "<li class='verifiedCitation'>";
+                        echo "<li id='cit" . $value["ID"] . " class='verifiedCitation'>";
                     }
                     if ((isset($_GET["mod"]) && $value["status"] >= 0) || (isset($_GET["ultradeleted"]) && $value["status"] < 0 && in_array($username, $admin)) || (isset($_GET["deleted"]) && $value["status"] == 0) || (isset($_GET["unverified"]) && $value["status"] == 1)) {
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
@@ -349,7 +351,7 @@ function reactions(int $citationNum, $db, $username): void
                     }
                     echo "</div></li>";
                 } else if ($value["status"] >= 1) {
-                    echo "<li>
+                    echo "<li id='cit" . $value["ID"] . "'>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
