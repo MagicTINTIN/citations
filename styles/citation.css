@@ -1,10 +1,14 @@
-.unselectable, img, header, .spanButtonReaction, .reactionNumber {
-  user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+.unselectable,
+img,
+header,
+.spanButtonReaction,
+.reactionNumber {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 li {
@@ -32,6 +36,10 @@ li {
     flex-direction: row;
     justify-content: right;
 }
+
+/* .authorDate {
+    font-weight: bold;
+} */
 
 .adzCitation {
     transform: translateY(min(-1.2vw, -1.2vh));
@@ -68,8 +76,14 @@ li {
     background-position: right;
     background-size: 1px 10px;
     background-repeat: repeat-y; */
+    transition: all 0.2s;
 }
 
+#newCitationSubmit {
+    font-weight: bold;
+    /* background-color: rgba(255, 255, 255, 0.185);
+    transition: all 0.2s; */
+}
 
 .authorInput {
     border-bottom-left-radius: max(1vh, 1vw);
@@ -89,13 +103,22 @@ li {
 .input:hover,
 textarea:hover {
     /* background-color: rgba(155, 155, 155, 0.185); */
-    background-color: rgba(255, 255, 255, 0.185);
+    /* background-color: rgba(255, 255, 255, 0.185); */
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .citationCommon {
     font-family: 'citationFont', 'citationFont2';
     font-size: max(5vw, 5vh);
     text-shadow: 0 10px 60px white;
+}
+
+.citationInput {
+    text-shadow: 0 10px 60px #AAAAAA;
+}
+
+::placeholder {
+    color: #AAAAAA; /* Change 'red' to your desired color */
 }
 
 .shiny {
@@ -124,6 +147,10 @@ textarea:hover {
 .zone3 {
     width: 50vw;
     margin: auto;
+}
+
+.openingInput {
+    transform: translateX(min(5vw, 5vh));
 }
 
 .closingInput {

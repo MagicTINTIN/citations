@@ -27,11 +27,11 @@ if (isset($_GET["json"])) {
     echo "]";
     exit();
 }
-include_once("includes/cas.php");
+// include_once("includes/cas.php");
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
-// $username = "serviere";
-$username = phpCAS::getUser();
+$username = "serviere";
+// $username = phpCAS::getUser();
 include_once("../db.php");
 include_once("includes/time.php");
 $db = dbConnect();
@@ -281,7 +281,11 @@ function reactions(int $citationNum, $db, $username): void
         <h1>Citations Magistrales</h1>
         <p class="underH1" title="Tant que ça ne porte pas atteinte à l'intégrité de la personne... bien évidemment">Enregistrez les pépites entendues en CM</p>
         <form method="post" class="citationForm">
-            <div class='citationZone zone'><span class='citationCommon'>"</span><textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea><span class='citationCommon closingInput'>"</span></div>
+            <div class='citationZone zone'>
+                <!-- <span class='citationCommon openingInput'>"</span> -->
+                <textarea oninput="autoGrow(this)" class="citationInput citationCommon" name="citationInput" id="citationInput" required maxlength="1024" placeholder="La citation"></textarea>
+                <!-- <span class='citationCommon closingInput'>"</span> -->
+            </div>
 
             <div class='authorDateZone authorDateZoneInput zone2'><input type="text" class="input authorDateInput authorDateCommon authorInput" name="authorInput" id="authorInput" required maxlength="250" placeholder="Quelqu'un">
                 <input type="date" class="input authorDateInput authorDateCommon dateInput" id="dateInput" name="dateInput" value="<?php echo date('Y-m-d') ?>" required>
@@ -315,6 +319,9 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
             $citations = $citationsStatement->fetchAll();
 
             foreach (array_reverse($citations) as $key => $value) {
+                $datetime = DateTime::createFromFormat('Y-m-d', $value["date"]);
+                $formattedDate = $datetime->format('j M Y');
+
                 if (in_array($username, $promoted) && (isset($_GET["mod"])  || isset($_GET["deleted"]) || isset($_GET["unverified"]))) {
                     if (in_array($username, $admin) && $value["status"] < 0 && (isset($_GET["mod"])  || isset($_GET["deleted"]))) {
                         echo "<li id='cit" . $value["ID"] . "' class='ultradeletedCitation'>";
@@ -330,7 +337,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
                         reactions($value['ID'], $db, $username);
-                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $value["date"] . "";
+                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
                             <div class="writer">
@@ -383,7 +390,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $value["date"] . "";
+                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
                         <div class="delMsgDiv">
