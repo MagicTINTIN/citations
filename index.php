@@ -51,9 +51,9 @@ if (isset($_POST["disconnection"])) {
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
 if (isset($_SESSION["connected"])) {
-    $username = "serviere";
-    // include_once("includes/cas.php");
-    // $username = phpCAS::getUser();
+    // $username = "serviere";
+    include_once("includes/cas.php");
+    $username = phpCAS::getUser();
 }
 
 include_once("../db.php");
@@ -71,7 +71,6 @@ if (isset($_POST["sort-by"])) {
 }
 
 if (isset($_SESSION["connected"])) {
-    // $_SESSION["DEBUG"] = "connected|";
     if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
         if (strlen(htmlspecialchars($_POST["citationInput"])) >= 4096 || strlen(htmlspecialchars($_POST["authorInput"])) >= 255) {
@@ -165,12 +164,9 @@ if (isset($_SESSION["connected"])) {
         header("Refresh:0");
         exit();
     } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"])) {
-        // $_SESSION["DEBUG"] = "updateReact|";
         $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
         $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
         if ($likeValue < -1 || $likeValue > 1) {
-            // header("Refresh:0");
-            // header('Location: #cit' . $citIDValue);
             $_SESSION["redirectToID"] = $citIDValue;
             header("Refresh:0");
             exit();
@@ -196,8 +192,6 @@ if (isset($_SESSION["connected"])) {
             ]);
         }
 
-        // header("Refresh:0");
-        // header('Location: #cit' . $citIDValue);
         $_SESSION["redirectToID"] = $citIDValue;
         header("Refresh:0");
         exit();
@@ -290,9 +284,6 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
     </head>
 <?php
 }
-
-if (isset($_SESSION["DEBUG"]))
-    echo "<!-- " . $_SESSION["DEBUG"] . " -->";
 
 function reactions(int $citationNum, $db, $username): void
 {
