@@ -70,7 +70,8 @@ if (isset($_POST["sort-by"])) {
     exit();
 }
 
-if (!isset($_SESSION["connected"])) {
+if (isset($_SESSION["connected"])) {
+    // $_SESSION["DEBUG"] = "connected|";
     if (isset($_POST["citationInput"]) && isset($_POST["authorInput"]) && isset($_POST["dateInput"]) && isset($_POST["citationInput"]) && isset($_POST["newCitationSubmit"])) {
 
         if (strlen(htmlspecialchars($_POST["citationInput"])) >= 4096 || strlen(htmlspecialchars($_POST["authorInput"])) >= 255) {
@@ -164,6 +165,7 @@ if (!isset($_SESSION["connected"])) {
         header("Refresh:0");
         exit();
     } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"])) {
+        // $_SESSION["DEBUG"] = "updateReact|";
         $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
         $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
         if ($likeValue < -1 || $likeValue > 1) {
@@ -288,6 +290,9 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
     </head>
 <?php
 }
+
+if (isset($_SESSION["DEBUG"]))
+    echo "<!-- " . $_SESSION["DEBUG"] . " -->";
 
 function reactions(int $citationNum, $db, $username): void
 {
