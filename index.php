@@ -49,11 +49,11 @@ if (isset($_POST["disconnection"])) {
 }
 
 if (isset($_SESSION["connected"])) {
-    // include_once("includes/cas.php");
+    include_once("includes/cas.php");
     $promoted = array('serviere', 'v_lasser', 'rebillar');
     $admin = array('serviere');
-    $username = "serviere";
-    // $username = phpCAS::getUser();
+    // $username = "serviere";
+    $username = phpCAS::getUser();
 }
 
 include_once("../db.php");
@@ -199,21 +199,18 @@ if (!isset($_SESSION["connected"])) {
 }
 
 if (isset($_GET["c"])) {
-    $ID = intval(htmlspecialchars($_GET["c"]));
+    $_SESSION["redirectToID"] = intval(htmlspecialchars($_GET["c"]));
 
     $db = dbConnect();
     $citationsStatement = $db->prepare('SELECT * FROM citations WHERE ID = :ID AND status > 0');
     $citationsStatement->execute([
-        "ID" => $ID
+        "ID" => $_SESSION["redirectToID"]
     ]);
     $citations = $citationsStatement->fetchAll();
 
     if (sizeof($citations) > 0) {
         $_SESSION["redirectToCitation"] = $citations[0]["citation"];
         $_SESSION["redirectToCitationAuthor"] = $citations[0]["author"];
-
-        header('Location: ./index.php#cit' . $ID);
-        exit();
     }
 }
 
@@ -252,8 +249,6 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
         <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
     </head>
 <?php
-    unset($_SESSION["redirectToCitation"]);
-    unset($_SESSION["redirectToCitationAuthor"]);
 } else {
 ?>
     <!DOCTYPE html>
@@ -556,6 +551,15 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
         </ul>
     </main>
     <script src="./scripts/common.js"></script>
+    <?php
+
+    if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
+        echo '<script>document.getElementById("cit' . $_SESSION["redirectToID"] . '").scrollIntoView();</script>';
+        unset($_SESSION["redirectToCitation"]);
+        unset($_SESSION["redirectToCitationAuthor"]);
+        unset($_SESSION["redirectToID"]);
+    }
+    ?>
 </body>
 
     </html>
