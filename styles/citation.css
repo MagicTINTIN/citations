@@ -110,11 +110,11 @@ textarea:hover {
 .citationCommon {
     font-family: 'citationFont', 'citationFont2';
     font-size: max(5vw, 5vh);
-    text-shadow: 0 10px 60px white;
+    text-shadow: 0 10px 20px rgba(255, 255, 255, 0.5);
 }
 
 .citationInput {
-    text-shadow: 0 10px 60px #AAAAAA;
+    text-shadow: 0 10px 20px #AAAAAAAA;
 }
 
 ::placeholder {
@@ -312,22 +312,22 @@ h1 {
 
 .ultradeletedCitation .citationZone span {
     color: rgba(214, 0, 0, 0.747);
-    text-shadow: 0 10px 60px rgba(214, 0, 0, 0.747);
+    text-shadow: 0 10px 20px rgba(214, 0, 0, 0.347);
 }
 
 .deletedCitation .citationZone span {
     color: rgba(255, 117, 117, 0.911);
-    text-shadow: 0 10px 60px rgba(255, 117, 117, 0.911);
+    text-shadow: 0 10px 20px rgba(255, 117, 117, 0.511);
 }
 
 .unverifiedCitation .citationZone span {
     color: rgb(255, 187, 0);
-    text-shadow: 0 10px 60px rgb(255, 187, 0);
+    text-shadow: 0 10px 20px rgba(255, 187, 0, 0.5);
 }
 
 .verifiedCitation .citationZone span {
     color: rgb(140, 255, 117);
-    text-shadow: 0 10px 60px rgb(140, 255, 117);
+    text-shadow: 0 10px 20px rgba(140, 255, 117,0.5);
 }
 
 .writer {
