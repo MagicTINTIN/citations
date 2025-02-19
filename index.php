@@ -42,11 +42,11 @@ if (isset($_POST["connection"])) {
 }
 
 if (isset($_SESSION["connected"])) {
-    // include_once("includes/cas.php");
+    include_once("includes/cas.php");
     $promoted = array('serviere', 'v_lasser', 'rebillar');
     $admin = array('serviere');
-    $username = "serviere";
-    // $username = phpCAS::getUser();
+    // $username = "serviere";
+    $username = phpCAS::getUser();
     
 }
 
