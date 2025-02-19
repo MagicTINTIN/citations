@@ -1,8 +1,7 @@
-<?php
+<?php session_start();
 
 use PSpell\Config;
 
-session_start();
 if (!isset($_SESSION["SORT-BY"]))
     $_SESSION["SORT-BY"] = "PLUS RÉCENT";
 
@@ -199,40 +198,97 @@ if (!isset($_SESSION["connected"])) {
     }
 }
 
+if (isset($_GET["c"])) {
+    $ID = intval(htmlspecialchars($_GET["c"]));
 
+    $db = dbConnect();
+    $citationsStatement = $db->prepare('SELECT * FROM citations WHERE ID = :ID AND status > 0');
+    $citationsStatement->execute([
+        "ID" => $ID
+    ]);
+    $citations = $citationsStatement->fetchAll();
+
+    if (sizeof($citations) > 0) {
+        $_SESSION["redirectToCitation"] = $citations[0]["citation"];
+        $_SESSION["redirectToCitationAuthor"] = $citations[0]["author"];
+
+        header('Location: ./index.php#cit' . $ID);
+        exit();
+    }
+}
+
+if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
+    $description = $_SESSION["redirectToCitation"] . "\n\n   - " . $_SESSION["redirectToCitationAuthor"];
 ?>
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-    <title>Citations Magistrales</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <title>Citations Magistrales</title>
 
-    <script src="./scripts/commonhead.js"></script>
-    <link href="./styles/animations.css" rel="stylesheet">
-    <link href="./styles/vars.css" rel="stylesheet">
-    <link href="./styles/issue.css" rel="stylesheet">
-    <link href="./styles/common.css" rel="stylesheet">
-    <link href="./styles/citation.css" rel="stylesheet">
-    <meta name="author" content="MagicTINTIN">
-    <meta name="description" content="Un site pour recenser les pépites entendues en CM">
+        <script src="./scripts/commonhead.js"></script>
+        <link href="./styles/animations.css" rel="stylesheet">
+        <link href="./styles/vars.css" rel="stylesheet">
+        <link href="./styles/issue.css" rel="stylesheet">
+        <link href="./styles/common.css" rel="stylesheet">
+        <link href="./styles/citation.css" rel="stylesheet">
+        <meta name="author" content="MagicTINTIN">
+        <meta name="description" content="<?php echo $description ?>">
 
-    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+        <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Citations Magistrales">
-    <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Citations Magistrales">
+        <meta property="og:description" content="<?php echo $description ?>">
 
-    <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Logo of Citations Magistrales">
+        <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:alt" content="Logo of Citations Magistrales">
 
-    <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
-    <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
-</head>
+        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
+        <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
+    </head>
 <?php
+    unset($_SESSION["redirectToCitation"]);
+    unset($_SESSION["redirectToCitationAuthor"]);
+} else {
+?>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <title>Citations Magistrales</title>
+
+        <script src="./scripts/commonhead.js"></script>
+        <link href="./styles/animations.css" rel="stylesheet">
+        <link href="./styles/vars.css" rel="stylesheet">
+        <link href="./styles/issue.css" rel="stylesheet">
+        <link href="./styles/common.css" rel="stylesheet">
+        <link href="./styles/citation.css" rel="stylesheet">
+        <meta name="author" content="MagicTINTIN">
+        <meta name="description" content="Un site pour recenser les pépites entendues en CM">
+
+        <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Citations Magistrales">
+        <meta property="og:description" content="Un site pour recenser les pépites entendues en CM">
+
+        <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:alt" content="Logo of Citations Magistrales">
+
+        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
+        <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
+    </head>
+<?php
+}
 
 function reactions(int $citationNum, $db, $username): void
 {
@@ -473,7 +529,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                     }
                     echo "</div></li>";
                 } else if (isset($_SESSION["connected"]) && $value["status"] >= 1) {
-                    echo "<li id='cit" . $value["ID"] . "''>
+                    echo "<li id='cit" . $value["ID"] . "'>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
@@ -502,4 +558,4 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
     <script src="./scripts/common.js"></script>
 </body>
 
-</html>
+    </html>
