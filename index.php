@@ -48,12 +48,12 @@ if (isset($_POST["disconnection"])) {
     exit();
 }
 
+$promoted = array('serviere', 'v_lasser', 'rebillar');
+$admin = array('serviere');
 if (isset($_SESSION["connected"])) {
-    include_once("includes/cas.php");
-    $promoted = array('serviere', 'v_lasser', 'rebillar');
-    $admin = array('serviere');
-    // $username = "serviere";
-    $username = phpCAS::getUser();
+    $username = "serviere";
+    // include_once("includes/cas.php");
+    // $username = phpCAS::getUser();
 }
 
 include_once("../db.php");
@@ -163,12 +163,14 @@ if (!isset($_SESSION["connected"])) {
 
         header("Refresh:0");
         exit();
-    } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"]) && in_array($username, $promoted)) {
+    } else if (isset($_POST["updateReaction"]) && isset($_POST["citationID"]) && isset($_POST["likeValue"])) {
         $likeValue = intval(htmlspecialchars($_POST["likeValue"]));
         $citIDValue = intval(htmlspecialchars($_POST["citationID"]));
         if ($likeValue < -1 || $likeValue > 1) {
             // header("Refresh:0");
-            header('Location: #cit' . $citIDValue);
+            // header('Location: #cit' . $citIDValue);
+            $_SESSION["redirectToID"] = $citIDValue;
+            header("Refresh:0");
             exit();
         }
         // {$date->format('Y-m-d H:i:s')}
@@ -193,7 +195,9 @@ if (!isset($_SESSION["connected"])) {
         }
 
         // header("Refresh:0");
-        header('Location: #cit' . $citIDValue);
+        // header('Location: #cit' . $citIDValue);
+        $_SESSION["redirectToID"] = $citIDValue;
+        header("Refresh:0");
         exit();
     }
 }
@@ -553,8 +557,11 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
     <script src="./scripts/common.js"></script>
     <?php
 
-    if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
-        echo '<script>document.getElementById("cit' . $_SESSION["redirectToID"] . '").scrollIntoView();</script>';
+    if (isset($_SESSION["redirectToID"]) || isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
+        echo '<script>document.getElementById("cit' . $_SESSION["redirectToID"] . '").scrollIntoView();
+        //window.history.pushState({}, "Citation n°' . $_SESSION["redirectToID"] . '", "/"+window.location.href.substring(window.location.href.lastIndexOf("c=' . $_SESSION["redirectToID"] . '") + 1).split("?")[0]);
+        window.history.pushState({}, "Citation n°' . $_SESSION["redirectToID"] . '", location.protocol + "//" + location.host + location.pathname);
+        </script>';
         unset($_SESSION["redirectToCitation"]);
         unset($_SESSION["redirectToCitationAuthor"]);
         unset($_SESSION["redirectToID"]);
