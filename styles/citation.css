@@ -253,6 +253,27 @@ textarea:hover {
     /* background-image: radial-gradient(var(--gv), var(--gev)); */
 }
 
+.topDeco {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.disconnectionButton {
+    margin: 7px;
+    border: none;
+    color:rgb(190, 190, 190);
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    transition: all 0.1s;
+}
+
+.disconnectionButton:hover {
+    color: white;
+}
+
 @media only screen and (max-width: 700px) {
     .authorDateZoneInput {
         flex-direction: column;

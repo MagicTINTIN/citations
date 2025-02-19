@@ -35,19 +35,26 @@ if (isset($_GET["json"])) {
 if (isset($_POST["connection"])) {
     unset($_POST);
     $_SESSION["connected"] = true;
-    
+
     // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
     header('Location: #');
     exit();
 }
 
+
+if (isset($_POST["disconnection"])) {
+    unset($_POST);
+    unset($_SESSION["connected"]);
+    header('Location: #');
+    exit();
+}
+
 if (isset($_SESSION["connected"])) {
-    include_once("includes/cas.php");
+    // include_once("includes/cas.php");
     $promoted = array('serviere', 'v_lasser', 'rebillar');
     $admin = array('serviere');
-    // $username = "serviere";
-    $username = phpCAS::getUser();
-    
+    $username = "serviere";
+    // $username = phpCAS::getUser();
 }
 
 include_once("../db.php");
@@ -324,7 +331,16 @@ function reactionsNotConnected(int $citationNum, $db): void
 
 <body>
     <?php include_once("./includes/nojs.php"); ?>
-    <?php include_once("./includes/infoanderror.php"); ?>
+    <?php include_once("./includes/infoanderror.php");
+    if (isset($_SESSION["connected"])) {
+    ?>
+        <form method="post" class="topDeco">
+            <input type="submit" class="disconnectionButton" id="connection" value="Déconnexion" name="disconnection">
+        </form>
+    <?php
+    }
+    ?>
+
     <main>
         <h1>Citations Magistrales</h1>
         <p class="underH1" title="Tant que ça ne porte pas atteinte à l'intégrité de la personne... bien évidemment">Enregistrez les pépites entendues en CM</p>
