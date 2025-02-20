@@ -14,7 +14,6 @@ if (isset($_GET["json"])) {
 
     include_once("includes/db.php");
     $db = dbConnect();
-    $db = dbConnect();
     $citationsStatement = $db->prepare('SELECT * FROM citations');
     $citationsStatement->execute();
     $citations = $citationsStatement->fetchAll();
@@ -51,9 +50,9 @@ if (isset($_POST["disconnection"])) {
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
 if (isset($_SESSION["connected"])) {
-    $username = "serviere";
-    // include_once("includes/cas.php");
-    // $username = phpCAS::getUser();
+    // $username = "serviere";
+    include_once("includes/cas.php");
+    $username = phpCAS::getUser();
 }
 
 include_once("../db.php");

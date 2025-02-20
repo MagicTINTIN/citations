@@ -131,6 +131,17 @@ textarea:hover {
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.548);
 }
 
+.selectedCitation {
+    /* radial-gradient(rgb(130 210 229 / 45%), rgba(26, 26, 26, 0) 65%, rgba(26, 26, 26, 0) 100%); */
+    /* background-image: radial-gradient(rgba(255, 255, 255, 0.445), rgba(26, 26, 26, 0)); */
+    /* background: linear-gradient(328deg, rgba(25, 17, 74, 1) 0%, rgb(39, 39, 104) 15%, rgb(16, 75, 87) 100%); */
+    /* background: linear-gradient(180deg, #0000 0%,#c1e0ffaa 30%, #aaEEffaa 35%, #4088cfaa 39%, #0077EEaa 70%, #0000 100%); */
+    /* background: linear-gradient(180deg, #0000 0%,#0077EE55 30%, #8bb9e755 39%, #0077EE55 70%, #0000 100%); */
+    background: linear-gradient(180deg, #0000 0%,#57abff55 30%, #0077EE55 70%, #0000 100%);
+
+
+}
+
 .authorDateCommon {
     font-size: larger;
 }
