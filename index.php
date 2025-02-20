@@ -215,7 +215,7 @@ if (isset($_GET["c"])) {
 }
 
 if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"]) && isset($_SESSION["redirectToCitationDate"])) {
-    $description = "\"" . $_SESSION["redirectToCitation"] . "\"\n\n   - " . $_SESSION["redirectToCitationAuthor"] . ", " . $_SESSION["redirectToCitationDate"];
+    $description = "« " . $_SESSION["redirectToCitation"] . " »\n\n   - " . $_SESSION["redirectToCitationAuthor"] . ", " . $_SESSION["redirectToCitationDate"];
 ?>
     <!DOCTYPE html>
     <html lang="en">
