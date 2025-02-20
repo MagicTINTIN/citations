@@ -210,11 +210,12 @@ if (isset($_GET["c"])) {
     if (sizeof($citations) > 0) {
         $_SESSION["redirectToCitation"] = $citations[0]["citation"];
         $_SESSION["redirectToCitationAuthor"] = $citations[0]["author"];
+        $_SESSION["redirectToCitationDate"] = $citations[0]["date"];
     }
 }
 
-if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
-    $description = $_SESSION["redirectToCitation"] . "\n\n   - " . $_SESSION["redirectToCitationAuthor"];
+if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"]) && isset($_SESSION["redirectToCitationDate"])) {
+    $description = $_SESSION["redirectToCitation"] . "\n\n   - " . $_SESSION["redirectToCitationAuthor"] . ", " . $_SESSION["redirectToCitationDate"];
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -232,19 +233,22 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
         <link href="./styles/common.css" rel="stylesheet">
         <link href="./styles/citation.css" rel="stylesheet">
         <meta name="author" content="MagicTINTIN">
+        <meta name="application-name" content="Citations Magistrales">
         <meta name="description" content="<?php echo $description ?>">
 
         <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Citations Magistrales">
+        <meta property="og:site_name" content="<?= $_SESSION["redirectToCitationAuthor"] ?>">
         <meta property="og:description" content="<?php echo $description ?>">
 
         <meta property="og:image" content="https://etud.insa-toulouse.fr/~serviere/citations/images/favicon.png">
         <meta property="og:image:type" content="image/png">
         <meta property="og:image:alt" content="Logo of Citations Magistrales">
+        <meta property="og:updated_time" content="<?= strtotime($_SESSION["redirectToCitationDate"]); ?>">
 
-        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations" />
+        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations/?c=<?php echo $_SESSION["redirectToID"] ?>" />
         <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
     </head>
 <?php
@@ -266,6 +270,7 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
         <link href="./styles/common.css" rel="stylesheet">
         <link href="./styles/citation.css" rel="stylesheet">
         <meta name="author" content="MagicTINTIN">
+        <meta name="application-name" content="Citations Magistrales">
         <meta name="description" content="Un site pour recenser les pépites entendues en CM">
 
         <link rel="icon" type="image/x-icon" href="images/favicon.png">
@@ -582,6 +587,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
         </script>';
         unset($_SESSION["redirectToCitation"]);
         unset($_SESSION["redirectToCitationAuthor"]);
+        unset($_SESSION["redirectToCitationDate"]);
         unset($_SESSION["redirectToID"]);
     }
     ?>
