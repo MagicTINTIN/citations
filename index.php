@@ -307,7 +307,7 @@ function reactions(int $citationNum, $db, $username): void
             }
 
             if ($userLikeValue == 1) { ?>
-                <form method="post" class="shiny">
+                <form method="post" class="shiny reactionButtonContainer">
                     <input type='hidden' name="likeValue" value="0">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -316,7 +316,7 @@ function reactions(int $citationNum, $db, $username): void
             <?php
             } else {
             ?>
-                <form method="post">
+                <form method="post" class="reactionButtonContainer">
                     <input type='hidden' name="likeValue" value="1">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -324,11 +324,14 @@ function reactions(int $citationNum, $db, $username): void
                 </form>
             <?php
             }
-            ?><span class="reactionNumber"><?php echo $totalLikesRatio ?></span>
+            ?>
+            <div class="reactionButtonContainer">
+                <span class="reactionNumber"><?php echo $totalLikesRatio ?></span>
+            </div>
             <?php
             if ($userLikeValue == -1) {
             ?>
-                <form method="post" class="shiny">
+                <form method="post" class="shiny reactionButtonContainer">
                     <input type='hidden' name="likeValue" value="0">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -337,7 +340,7 @@ function reactions(int $citationNum, $db, $username): void
             <?php
             } else {
             ?>
-                <form method="post">
+                <form method="post" class="reactionButtonContainer">
                     <input type='hidden' name="likeValue" value="-1">
                     <input type='hidden' name="citationID" value="<?php echo $citationNum ?>">
 
@@ -347,7 +350,10 @@ function reactions(int $citationNum, $db, $username): void
             }
             ?>
         </div>
-        <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+        <div class="reactionButtonContainer">
+            <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+        </div>
+
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
     </div>
@@ -370,9 +376,19 @@ function reactionsNotConnected(int $citationNum, $db): void
 ?>
     <div class="reactions">
         <div class="reactionCounter">
-            <span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter')">△</span><span class="reactionNumber"><?php echo $totalLikesRatio ?></span><span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter !')">▽</span>
+            <div class="reactionButtonContainer">
+                <span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter')">△</span>
+            </div>
+            <div class="reactionButtonContainer">
+                <span class="reactionNumber"><?php echo $totalLikesRatio ?></span>
+            </div>
+            <div class="reactionButtonContainer">
+                <span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter !')">▽</span>
+            </div>
         </div>
-        <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+        <div class="reactionButtonContainer">
+            <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+        </div>
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
     </div>
@@ -477,7 +493,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         echo "<div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                         <div class='authorDateZone zone adzCitation'>";
                         reactions($value['ID'], $db, $username);
-                        echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
+                        echo "<div class='reactionButtonContainer'><span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                         if (isset($_GET["mod"]) && in_array($username, $promoted)) {
             ?>
                             <div class="writer">
@@ -524,13 +540,13 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                             }
                         }
                     }
-                    echo "</div></li>";
+                    echo "</div></div></li>";
                 } else if (isset($_SESSION["connected"]) && $value["status"] >= 1) {
                     echo "<li id='cit" . $value["ID"] . "'>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
+                    echo "<div class='reactionButtonContainer'><span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
                     if (in_array($username, $promoted) || $username == $value["username"]) {
                         ?>
                         <div class="delMsgDiv">
@@ -538,15 +554,15 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                         </div>
             <?php
                     }
-                    echo "</div></li>";
+                    echo "</div></div></li>";
                 } else if ($value["status"] >= 1) {
                     echo "<li id='cit" . $value["ID"] . "''>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactionsNotConnected($value["ID"], $db);
-                    echo "<span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
+                    echo "<div class='reactionButtonContainer'><span class='authorDate authorDateCommon'>" . $value["author"] . ", " . $formattedDate . "";
 
-                    echo "</div></li>";
+                    echo "</div></div></li>";
                 }
             }
             ?>

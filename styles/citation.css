@@ -42,7 +42,7 @@ li {
 } */
 
 .adzCitation {
-    transform: translateY(min(-1.2vw, -1.2vh));
+    transform: translateY(min(-1.4vw, -1.4vh));
 }
 
 .citationInput {
@@ -409,4 +409,10 @@ h1 {
 
 #sortby input:hover {
     background-color: rgba(255, 255, 255, 0.3);
+}
+
+.reactionButtonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
