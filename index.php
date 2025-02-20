@@ -51,9 +51,9 @@ if (isset($_POST["disconnection"])) {
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
 if (isset($_SESSION["connected"])) {
-    // $username = "serviere";
-    include_once("includes/cas.php");
-    $username = phpCAS::getUser();
+    $username = "serviere";
+    // include_once("includes/cas.php");
+    // $username = phpCAS::getUser();
 }
 
 include_once("../db.php");
@@ -347,6 +347,7 @@ function reactions(int $citationNum, $db, $username): void
             }
             ?>
         </div>
+        <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
     </div>
@@ -371,6 +372,7 @@ function reactionsNotConnected(int $citationNum, $db): void
         <div class="reactionCounter">
             <span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter')">△</span><span class="reactionNumber"><?php echo $totalLikesRatio ?></span><span class="spanButtonReactionDisabled" title="Connectez-vous pour pouvoir réagir !" onclick="youNeedToBeConnected('voter !')">▽</span>
         </div>
+        <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
     </div>
