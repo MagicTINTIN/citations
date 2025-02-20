@@ -542,7 +542,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                     }
                     echo "</div></div></li>";
                 } else if (isset($_SESSION["connected"]) && $value["status"] >= 1) {
-                    echo "<li id='cit" . $value["ID"] . "'>
+                    echo "<li id='cit" . $value["ID"] . "' class='" . ((isset($_SESSION["redirectToID"]) && $value["ID"] == $_SESSION["redirectToID"]) ? "selectedCitation" : "") . "'>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactions($value["ID"], $db, $username);
@@ -556,7 +556,7 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
                     }
                     echo "</div></div></li>";
                 } else if ($value["status"] >= 1) {
-                    echo "<li id='cit" . $value["ID"] . "''>
+                    echo "<li id='cit" . $value["ID"] . "' class='" . ((isset($_SESSION["redirectToID"]) && $value["ID"] == $_SESSION["redirectToID"]) ? "selectedCitation" : "") . "'>
                 <div class='citationZone zone'><span class='citation citationCommon'>\"" . $value["citation"] . "\"</div>
                 <div class='authorDateZone zone adzCitation'>";
                     reactionsNotConnected($value["ID"], $db);
@@ -572,7 +572,12 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
     <?php
 
     if (isset($_SESSION["redirectToID"]) || isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"])) {
-        echo '<script>document.getElementById("cit' . $_SESSION["redirectToID"] . '").scrollIntoView();
+        echo '<script>document.getElementById("cit' . $_SESSION["redirectToID"] . '").scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest"
+        });
+        // window.scrollBy(0,-00); // x,y
         //window.history.pushState({}, "Citation n°' . $_SESSION["redirectToID"] . '", "/"+window.location.href.substring(window.location.href.lastIndexOf("c=' . $_SESSION["redirectToID"] . '") + 1).split("?")[0]);
         window.history.pushState({}, "Citation n°' . $_SESSION["redirectToID"] . '", location.protocol + "//" + location.host + location.pathname);
         </script>';
