@@ -351,7 +351,7 @@ function reactions(int $citationNum, $db, $username): void
             ?>
         </div>
         <div class="reactionButtonContainer">
-            <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+            <span class="spanButtonReaction" onclick="shareCitation(<?php echo $citationNum ?>);">➦</span>
         </div>
 
         <!-- ▲⇧⬆1⬇⇩▼ -->
@@ -387,7 +387,7 @@ function reactionsNotConnected(int $citationNum, $db): void
             </div>
         </div>
         <div class="reactionButtonContainer">
-            <span class="spanButtonReaction" onclick="alert('Not available yet');">➦</span>
+            <span class="spanButtonReaction"  onclick="shareCitation(<?php echo $citationNum ?>);">➦</span>
         </div>
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
@@ -581,6 +581,13 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
         unset($_SESSION["redirectToID"]);
     }
     ?>
+    <script>
+        function shareCitation(citationNumber) {
+            let urlName = window.location.origin + window.location.pathname + `?c=${citationNumber}`
+            createMessage("info", "URL Copiée !", `Le lien de la citation (${urlName}) a été copié dans votre presse papier !`)
+            navigator.clipboard.writeText(urlName);
+        }
+    </script>
 </body>
 
     </html>
