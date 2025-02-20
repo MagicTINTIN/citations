@@ -594,8 +594,8 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
     <script>
         function shareCitation(citationNumber) {
             let path = window.location.pathname;
-            if (path.endsWith("/"))
-                path = path.slice(0,-1);
+            // if (path.endsWith("/"))
+            //     path = path.slice(0,-1);
             let urlName = window.location.origin + path + `?c=${citationNumber}`;
             createMessage("info", "URL Copiée !", `Le lien de la citation (${urlName}) a été copié dans votre presse papier !`)
             navigator.clipboard.writeText(urlName);
