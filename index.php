@@ -215,7 +215,7 @@ if (isset($_GET["c"])) {
 }
 
 if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitationAuthor"]) && isset($_SESSION["redirectToCitationDate"])) {
-    $description = $_SESSION["redirectToCitation"] . "\n\n   - " . $_SESSION["redirectToCitationAuthor"] . ", " . $_SESSION["redirectToCitationDate"];
+    $description = "\"" . $_SESSION["redirectToCitation"] . "\"\n\n   - " . $_SESSION["redirectToCitationAuthor"] . ", " . $_SESSION["redirectToCitationDate"];
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -248,7 +248,7 @@ if (isset($_SESSION["redirectToCitation"]) && isset($_SESSION["redirectToCitatio
         <meta property="og:image:alt" content="Logo of Citations Magistrales">
         <meta property="og:updated_time" content="<?= strtotime($_SESSION["redirectToCitationDate"]); ?>">
 
-        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations/?c=<?php echo $_SESSION["redirectToID"] ?>" />
+        <meta property="og:url" content="https://etud.insa-toulouse.fr/~serviere/citations?c=<?php echo $_SESSION["redirectToID"] ?>" />
         <meta data-react-helmet="true" name="theme-color" content="#43ceed" />
     </head>
 <?php
@@ -593,7 +593,10 @@ ORDER BY COALESCE(cc.totalLikes, 0) ASC, c.postedTime ASC;
     ?>
     <script>
         function shareCitation(citationNumber) {
-            let urlName = window.location.origin + window.location.pathname + `?c=${citationNumber}`
+            let path = window.location.pathname;
+            if (path.endsWith("/"))
+                path = path.slice(0,-1);
+            let urlName = window.location.origin + path + `?c=${citationNumber}`;
             createMessage("info", "URL Copiée !", `Le lien de la citation (${urlName}) a été copié dans votre presse papier !`)
             navigator.clipboard.writeText(urlName);
         }
