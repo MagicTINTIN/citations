@@ -33,8 +33,8 @@ if (isset($_GET["json"])) {
 if (isset($_POST["connection"])) {
     unset($_POST);
 
-    include_once("includes/cas.php");
-    $username = phpCAS::getUser();
+    // include_once("includes/cas.php");
+    // $username = phpCAS::getUser();
     
     $_SESSION["connected"] = true;
 
