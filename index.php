@@ -39,8 +39,8 @@ if (isset($_POST["connection"])) {
     $_SESSION["connected"] = true;
 
     // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
-    header('Location: #');
-    exit();
+    // header('Location: #');
+    // exit();
 }
 
 
