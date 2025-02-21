@@ -32,7 +32,12 @@ if (isset($_GET["json"])) {
 
 if (isset($_POST["connection"])) {
     unset($_POST);
-    $_SESSION["connected"] = true;
+
+    include_once("includes/cas.php");
+    $username = phpCAS::getUser();
+
+    if (isset($username) && sizeof($username) > 0)
+        $_SESSION["connected"] = true;
 
     // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
     header('Location: #');
@@ -391,7 +396,7 @@ function reactionsNotConnected(int $citationNum, $db): void
             </div>
         </div>
         <div class="reactionButtonContainer">
-            <span class="spanButtonReaction"  onclick="shareCitation(<?php echo $citationNum ?>);">➦</span>
+            <span class="spanButtonReaction" onclick="shareCitation(<?php echo $citationNum ?>);">➦</span>
         </div>
         <!-- ▲⇧⬆1⬇⇩▼ -->
         <!-- <span class="spanButtonReaction" onclick="alert('Not available yet');">🗩</span> -->
