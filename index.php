@@ -35,9 +35,8 @@ if (isset($_POST["connection"])) {
 
     include_once("includes/cas.php");
     $username = phpCAS::getUser();
-
-    if (isset($username) && strlen($username) > 0)
-        $_SESSION["connected"] = true;
+    
+    $_SESSION["connected"] = true;
 
     // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
     header('Location: #');
