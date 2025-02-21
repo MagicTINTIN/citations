@@ -31,10 +31,11 @@ if (isset($_GET["json"])) {
 }
 
 if (isset($_POST["connection"])) {
-    unset($_POST);
+    // unset($_POST);
 
-    // include_once("includes/cas.php");
-    // $username = phpCAS::getUser();
+    // $username = "serviere";
+    include_once("includes/cas.php");
+    $username = phpCAS::getUser();
     
     $_SESSION["connected"] = true;
 
@@ -53,7 +54,7 @@ if (isset($_POST["disconnection"])) {
 
 $promoted = array('serviere', 'v_lasser', 'rebillar');
 $admin = array('serviere');
-if (isset($_SESSION["connected"])) {
+if (isset($_SESSION["connected"]) && !isset($_POST["connection"])) {
     // $username = "serviere";
     include_once("includes/cas.php");
     $username = phpCAS::getUser();
