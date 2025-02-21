@@ -31,17 +31,17 @@ if (isset($_GET["json"])) {
 }
 
 if (isset($_POST["connection"])) {
-    // unset($_POST);
+    unset($_POST);
 
     // $username = "serviere";
-    include_once("includes/cas.php");
-    $username = phpCAS::getUser();
+    // include_once("includes/cas.php");
+    // $username = phpCAS::getUser();
     
     $_SESSION["connected"] = true;
 
     // header("Refresh:0"); // WTF ??? PHP LA MERDE ? POURQUOI ÇA MARCHE PAS ???
-    // header('Location: #');
-    // exit();
+    header('Location: #');
+    exit();
 }
 
 
