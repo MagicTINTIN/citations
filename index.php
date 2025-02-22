@@ -12,7 +12,7 @@ function safeStr($input): string
 
 if (isset($_GET["json"])) {
 
-    include_once("includes/db.php");
+    include_once("../db.php");
     $db = dbConnect();
     $citationsStatement = $db->prepare('SELECT * FROM citations');
     $citationsStatement->execute();
